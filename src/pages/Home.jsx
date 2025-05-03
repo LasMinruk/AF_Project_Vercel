@@ -88,17 +88,18 @@ const Home = () => {
     >
       {/* Controls */}
       <div style={{
-        display: "flex",
-        flexDirection: "column",
+        display: "grid",
         gap: "1rem",
-        marginBottom: "2.5rem"
+        marginBottom: "2.5rem",
+        gridTemplateColumns: "1fr",
       }}>
         {/* Search */}
-        <div style={{ position: "relative", width: "100%" }}>
+        <div style={{ position: "relative" }}>
           <FaSearch style={{
             position: "absolute",
             left: "0.75rem",
-            top: "0.75rem",
+            top: "50%",
+            transform: "translateY(-50%)",
             color: "#9ca3af"
           }} />
           <input
@@ -118,11 +119,12 @@ const Home = () => {
         </div>
 
         {/* Region Filter */}
-        <div style={{ position: "relative", width: "100%" }}>
+        <div style={{ position: "relative" }}>
           <FaGlobe style={{
             position: "absolute",
             left: "0.75rem",
-            top: "0.75rem",
+            top: "50%",
+            transform: "translateY(-50%)",
             color: "#9ca3af"
           }} />
           <select
@@ -180,15 +182,16 @@ const Home = () => {
             borderRadius: "50%",
             height: "4rem",
             width: "4rem",
+            border: "4px solid #e5e7eb",
             borderTop: "4px solid #3b82f6",
             margin: "0 auto"
-          }}></div>
+          }} />
           <p style={{ color: "#6b7280", marginTop: "1rem" }}>Loading countries...</p>
         </div>
       ) : (
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
           gap: "1.5rem"
         }}>
           {filtered.length > 0 ? (
