@@ -94,27 +94,40 @@ const Home = () => {
         gridTemplateColumns: "1fr",
       }}>
         {/* Search */}
-        <div style={{ position: "relative" }}>
-          <FaSearch style={{
-            position: "absolute",
-            left: "0.75rem",
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "#9ca3af"
-          }} />
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <FaSearch
+            style={{
+              position: "absolute",
+              left: "1rem",
+              color: "#9ca3af",
+              fontSize: "1rem",
+              pointerEvents: "none",
+            }}
+          />
           <input
             type="text"
             placeholder="Search by country name..."
-            style={{
-              padding: "0.75rem 1rem 0.75rem 2.5rem",
-              width: "100%",
-              borderRadius: "0.75rem",
-              border: "1px solid #d1d5db",
-              outline: "none",
-              transition: "all 0.2s"
-            }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "0.75rem 1rem 0.75rem 2.75rem",
+              borderRadius: "0.75rem",
+              border: "1px solid #d1d5db",
+              backgroundColor: "white",
+              fontSize: "0.95rem",
+              color: "#111827",
+              outline: "none",
+              boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+              transition: "all 0.2s ease",
+            }}
           />
         </div>
 
