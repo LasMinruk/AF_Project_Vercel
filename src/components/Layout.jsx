@@ -36,40 +36,53 @@ const Layout = ({ children }) => {
       {/* Header */}
       <header
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
           backdropFilter: "blur(10px)",
           position: "sticky",
           top: 0,
-          zIndex: 50,
-          boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+          zIndex: 1000,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
           borderBottom: "1px solid #e5e7eb",
+          width: "100%",
         }}
       >
         <div
           style={{
             maxWidth: "1280px",
             margin: "0 auto",
-            padding: "0.5rem 1rem",
+            padding: "0.75rem 1rem",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             flexWrap: "wrap",
-            gap: "0.75rem",
+            rowGap: "0.5rem",
           }}
         >
           <Link
             to="/"
             style={{
-              fontSize: "1.5rem",
-              fontWeight: "700",
+              fontSize: "1.75rem",
+              fontWeight: "800",
               color: "#1d4ed8",
               textDecoration: "none",
+              letterSpacing: "-0.5px",
+              flex: "1 1 auto",
             }}
           >
-            Country Explorer
+            🌍 Country Explorer
           </Link>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "0.75rem",
+              justifyContent: "flex-end",
+              flex: "1 1 auto",
+            }}
+          >
+            {/* Favorites */}
             <motion.button
               onClick={handleFavoritesClick}
               whileHover={{ scale: 1.05 }}
@@ -86,6 +99,7 @@ const Layout = ({ children }) => {
                 gap: "0.5rem",
                 border: "none",
                 cursor: "pointer",
+                transition: "background 0.3s ease",
               }}
             >
               <FaHeart />
@@ -113,6 +127,7 @@ const Layout = ({ children }) => {
               )}
             </motion.button>
 
+            {/* Auth buttons */}
             {currentUser ? (
               <button
                 onClick={handleLogout}
@@ -125,6 +140,7 @@ const Layout = ({ children }) => {
                   alignItems: "center",
                   gap: "0.5rem",
                   border: "none",
+                  fontWeight: "500",
                   cursor: "pointer",
                 }}
               >
@@ -140,6 +156,7 @@ const Layout = ({ children }) => {
                   padding: "0.5rem 1rem",
                   borderRadius: "0.375rem",
                   fontSize: "0.875rem",
+                  fontWeight: "500",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
@@ -154,12 +171,12 @@ const Layout = ({ children }) => {
         </div>
       </header>
 
-      {/* Main */}
+      {/* Main Content */}
       <main
         style={{
           flexGrow: 1,
-          maxWidth: "1280px",
           width: "100%",
+          maxWidth: "1280px",
           margin: "0 auto",
           padding: "1rem",
         }}
@@ -177,7 +194,7 @@ const Layout = ({ children }) => {
           borderTop: "1px solid #e5e7eb",
         }}
       >
-        © 2024 Country Explorer. All rights reserved.
+        © {new Date().getFullYear()} Country Explorer. All rights reserved.
       </footer>
     </div>
   );
