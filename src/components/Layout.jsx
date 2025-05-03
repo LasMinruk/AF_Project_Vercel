@@ -69,7 +69,7 @@ const Layout = ({ children }) => {
               flex: "1 1 auto",
             }}
           >
-            🌍 Country Explorer
+             Country Explorer
           </Link>
 
           <div

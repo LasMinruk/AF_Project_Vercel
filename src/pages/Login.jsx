@@ -4,7 +4,6 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -12,7 +11,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      await login(email); // assuming login(email) works without password
       navigate("/");
     } catch (err) {
       setError("Failed to log in. Please check your credentials.");
@@ -26,14 +25,17 @@ const Login = () => {
       alignItems: "center",
       justifyContent: "center",
       padding: "0 1rem",
-      backgroundColor: "#f3f4f6"
+      backgroundImage: `url("https://img.freepik.com/free-vector/minimal-world-map-isolated-white-background-with-shadow_1017-42608.jpg?t=st=1746195268~exp=1746198868~hmac=1a08efc4969cca22f324949f86fd30721a5897018ed03dc02e9b4780d67cb235&w=1800")`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat"
     }}>
       <div style={{
         position: "relative",
         width: "100%",
         maxWidth: "28rem",
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
-        backdropFilter: "blur(12px)",
+        backgroundColor: "rgba(255, 255, 255, 0.85)",
+        backdropFilter: "blur(10px)",
         border: "1px solid rgba(255, 255, 255, 0.3)",
         boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
         borderRadius: "1.5rem",
@@ -71,16 +73,13 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "1.5rem" }}>
-            <label
-              htmlFor="email"
-              style={{
-                display: "block",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                color: "#374151",
-                marginBottom: "0.25rem"
-              }}
-            >
+            <label htmlFor="email" style={{
+              display: "block",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+              color: "#374151",
+              marginBottom: "0.25rem"
+            }}>
               Email
             </label>
             <input
@@ -88,35 +87,6 @@ const Login = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "0.5rem",
-                border: "1px solid #d1d5db",
-                outline: "none"
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "1.5rem" }}>
-            <label
-              htmlFor="password"
-              style={{
-                display: "block",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                color: "#374151",
-                marginBottom: "0.25rem"
-              }}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required
               style={{
                 width: "100%",
@@ -136,19 +106,16 @@ const Login = () => {
             }}>{error}</p>
           )}
 
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              background: "linear-gradient(to right, #3b82f6, #6366f1)",
-              color: "white",
-              padding: "0.75rem",
-              borderRadius: "0.75rem",
-              fontWeight: "600",
-              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-              transition: "all 0.2s"
-            }}
-          >
+          <button type="submit" style={{
+            width: "100%",
+            background: "linear-gradient(to right, #3b82f6, #6366f1)",
+            color: "white",
+            padding: "0.75rem",
+            borderRadius: "0.75rem",
+            fontWeight: "600",
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            transition: "all 0.2s"
+          }}>
             Log In
           </button>
         </form>
