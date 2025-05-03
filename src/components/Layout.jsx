@@ -36,12 +36,12 @@ const Layout = ({ children }) => {
       {/* Header */}
       <header
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
           position: "sticky",
           top: 0,
-          zIndex: 1000,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+          zIndex: 50,
+          boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
           borderBottom: "1px solid #e5e7eb",
           width: "100%",
         }}
@@ -50,23 +50,32 @@ const Layout = ({ children }) => {
           style={{
             maxWidth: "1280px",
             margin: "0 auto",
-            padding: "0.75rem 1rem",
+            padding: "0.5rem 1rem",
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
+            justifyContent: "space-between",
             flexWrap: "wrap",
-            rowGap: "0.5rem",
+            gap: "0.5rem",
           }}
         >
           <Link
             to="/"
             style={{
-              fontSize: "1.75rem",
-              fontWeight: "800",
+              fontSize: "clamp(1.25rem, 4vw, 1.5rem)",
+              fontWeight: "700",
               color: "#1d4ed8",
+              transition: "all 0.2s",
               textDecoration: "none",
-              letterSpacing: "-0.5px",
-              flex: "1 1 auto",
+              display: "inline-block",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.color = "#ef4444";
+              e.target.style.transform = "scale(1.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = "#1d4ed8";
+              e.target.style.transform = "scale(1)";
             }}
           >
             Country Explorer
@@ -76,10 +85,9 @@ const Layout = ({ children }) => {
             style={{
               display: "flex",
               alignItems: "center",
+              gap: "0.5rem",
               flexWrap: "wrap",
-              gap: "0.75rem",
               justifyContent: "flex-end",
-              flex: "1 1 auto",
             }}
           >
             {/* Favorites */}
@@ -90,77 +98,94 @@ const Layout = ({ children }) => {
                 position: "relative",
                 backgroundColor: "#fce7f3",
                 color: "#be185d",
-                padding: "0.5rem 1rem",
+                padding: "0.375rem 0.75rem",
                 borderRadius: "9999px",
-                fontSize: "0.875rem",
+                fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
                 fontWeight: "500",
+                boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                transition: "all 0.2s",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                border: "none",
-                cursor: "pointer",
-                transition: "background 0.3s ease",
+                whiteSpace: "nowrap",
               }}
             >
               <FaHeart />
               Favorites
               {favorites.length > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                <span
                   style={{
                     position: "absolute",
-                    top: "-8px",
-                    right: "-8px",
+                    top: "-0.5rem",
+                    right: "-0.5rem",
                     backgroundColor: "#db2777",
                     color: "white",
                     fontSize: "0.75rem",
                     fontWeight: "700",
                     borderRadius: "9999px",
-                    padding: "2px 6px",
-                    lineHeight: 1,
+                    padding: "0.125rem 0.375rem",
+                    minWidth: "1.25rem",
+                    textAlign: "center",
                   }}
                 >
                   {favorites.length}
-                </motion.span>
+                </span>
               )}
             </motion.button>
 
             {/* Auth buttons */}
             {currentUser ? (
-              <button
-                onClick={handleLogout}
+              <div
                 style={{
-                  backgroundColor: "#ef4444",
-                  color: "#fff",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.375rem",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  border: "none",
-                  fontWeight: "500",
-                  cursor: "pointer",
                 }}
               >
-                <FaSignOutAlt />
-                Logout
-              </button>
+                <span
+                  style={{
+                    fontSize: "0.875rem",
+                    color: "#374151",
+                    display: "none",
+                  }}
+                >
+                  {currentUser.email}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    backgroundColor: "#ef4444",
+                    color: "white",
+                    padding: "0.375rem 0.75rem",
+                    borderRadius: "0.375rem",
+                    fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
+                    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <FaSignOutAlt />
+                  Logout
+                </button>
+              </div>
             ) : (
               <Link
                 to="/login"
                 style={{
                   backgroundColor: "#3b82f6",
                   color: "white",
-                  padding: "0.5rem 1rem",
+                  padding: "0.375rem 0.75rem",
                   borderRadius: "0.375rem",
-                  fontSize: "0.875rem",
-                  fontWeight: "500",
+                  fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
+                  boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                  transition: "all 0.2s",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  textDecoration: "none",
+                  whiteSpace: "nowrap",
                 }}
               >
                 <FaUser />
@@ -178,7 +203,7 @@ const Layout = ({ children }) => {
           width: "100%",
           maxWidth: "1280px",
           margin: "0 auto",
-          padding: "1rem",
+          padding: "0.5rem 1rem 1.5rem",
         }}
       >
         {children}
@@ -188,9 +213,9 @@ const Layout = ({ children }) => {
       <footer
         style={{
           textAlign: "center",
-          padding: "1rem",
-          fontSize: "0.75rem",
+          fontSize: "clamp(0.625rem, 2vw, 0.75rem)",
           color: "#6b7280",
+          padding: "1rem 0",
           borderTop: "1px solid #e5e7eb",
         }}
       >
