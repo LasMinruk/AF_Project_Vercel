@@ -1,28 +1,59 @@
-// Import React and required dependencies
 import React from "react";
 import { useFavorites } from "../contexts/FavoritesContext";
 import CountryCard from "../components/CountryCard";
 import { Link } from "react-router-dom";
 
-// Page component for displaying user's favorite countries
 const Favorites = () => {
-  // Get favorites from context
   const { favorites } = useFavorites();
 
+  const containerStyle = {
+    padding: "2rem 1rem",
+    maxWidth: "1280px",
+    margin: "0 auto",
+  };
+
+  const headingStyle = {
+    fontSize: "2rem",
+    fontWeight: "700",
+    marginBottom: "1.5rem",
+    textAlign: "center",
+    color: "#1f2937",
+  };
+
+  const emptyStateStyle = {
+    textAlign: "center",
+    padding: "2rem 1rem",
+    color: "#4b5563",
+  };
+
+  const linkStyle = {
+    color: "#2563eb",
+    textDecoration: "underline",
+    fontWeight: "500",
+    fontSize: "1rem",
+  };
+
+  const gridStyle = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+    gap: "1.5rem",
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Favorite Countries</h1>
+    <div style={containerStyle}>
+      <h1 style={headingStyle}>🌍 Favorite Countries</h1>
+
       {favorites.length === 0 ? (
-        // Empty state message
-        <div className="text-center">
-          <p className="text-xl mb-4">You haven't added any favorites yet.</p>
-          <Link to="/" className="text-blue-500 hover:underline">
-            Browse countries
+        <div style={emptyStateStyle}>
+          <p style={{ fontSize: "1.25rem", marginBottom: "0.75rem" }}>
+            You haven’t added any favorites yet.
+          </p>
+          <Link to="/" style={linkStyle}>
+            Browse Countries
           </Link>
         </div>
       ) : (
-        // Grid of favorite country cards
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div style={gridStyle}>
           {favorites.map((country) => (
             <CountryCard key={country.cca3} country={country} />
           ))}

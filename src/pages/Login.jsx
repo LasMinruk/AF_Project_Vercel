@@ -1,84 +1,165 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.includes("@")) {
-      setError("Please enter a valid email address.");
-      return;
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (err) {
+      setError("Failed to log in. Please check your credentials.");
     }
-    setError("");
-    login(email);
-    navigate("/");
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 bg-gray-100"
-      style={{
-        backgroundImage: `url("https://img.freepik.com/free-vector/minimal-world-map-isolated-white-background-with-shadow_1017-42608.jpg?t=st=1746195268~exp=1746198868~hmac=1a08efc4969cca22f324949f86fd30721a5897018ed03dc02e9b4780d67cb235&w=1800")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="relative w-full max-w-md bg-white/80 backdrop-blur-lg border border-white/30 shadow-2xl rounded-3xl p-8 sm:p-10 transition-all duration-300">
-
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="absolute top-4 left-4 text-blue-600 hover:text-blue-800 text-sm font-medium transition duration-200"
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "0 1rem",
+      backgroundColor: "#f3f4f6"
+    }}>
+      <div style={{
+        position: "relative",
+        width: "100%",
+        maxWidth: "28rem",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        borderRadius: "1.5rem",
+        padding: "2rem",
+        transition: "all 0.3s"
+      }}>
+        <Link
+          to="/"
+          style={{
+            position: "absolute",
+            top: "1rem",
+            left: "1rem",
+            color: "#2563eb",
+            fontSize: "0.875rem",
+            fontWeight: "500",
+            transition: "all 0.2s"
+          }}
         >
-          ← Go Back
-        </button>
+          ← Back to Home
+        </Link>
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-blue-700 tracking-tight">Welcome Back</h1>
-          <p className="text-sm text-gray-600 mt-1">Log in to explore countries you love</p>
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <h1 style={{
+            fontSize: "2.25rem",
+            fontWeight: "800",
+            color: "#1d4ed8",
+            letterSpacing: "-0.025em"
+          }}>Welcome Back</h1>
+          <p style={{
+            fontSize: "0.875rem",
+            color: "#4b5563",
+            marginTop: "0.25rem"
+          }}>Log in to explore countries you love</p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: "1.5rem" }}>
+            <label
+              htmlFor="email"
+              style={{
+                display: "block",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                color: "#374151",
+                marginBottom: "0.25rem"
+              }}
+            >
+              Email
             </label>
             <input
-              id="email"
               type="email"
-              placeholder="you@example.com"
-              className={`w-full px-4 py-3 rounded-xl border ${
-                error ? "border-red-500" : "border-gray-300"
-              } focus:outline-none focus:ring-2 ${
-                error ? "focus:ring-red-400" : "focus:ring-blue-500"
-              } transition duration-200 shadow-inner`}
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "0.5rem",
+                border: "1px solid #d1d5db",
+                outline: "none"
+              }}
             />
-            {error && (
-              <p className="text-sm text-red-500 mt-1">{error}</p>
-            )}
           </div>
+
+          <div style={{ marginBottom: "1.5rem" }}>
+            <label
+              htmlFor="password"
+              style={{
+                display: "block",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                color: "#374151",
+                marginBottom: "0.25rem"
+              }}
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "0.5rem",
+                border: "1px solid #d1d5db",
+                outline: "none"
+              }}
+            />
+          </div>
+
+          {error && (
+            <p style={{
+              fontSize: "0.875rem",
+              color: "#ef4444",
+              marginTop: "0.25rem"
+            }}>{error}</p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-indigo-600 hover:shadow-xl transition duration-200"
+            style={{
+              width: "100%",
+              background: "linear-gradient(to right, #3b82f6, #6366f1)",
+              color: "white",
+              padding: "0.75rem",
+              borderRadius: "0.75rem",
+              fontWeight: "600",
+              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.2s"
+            }}
           >
-            Login
+            Log In
           </button>
         </form>
 
-        {/* Footer */}
-        <p className="text-xs text-center text-gray-500 mt-6">
-          Country Explorer by <span className="text-blue-500 font-medium">Lasiru Minruk</span>
+        <p style={{
+          fontSize: "0.75rem",
+          textAlign: "center",
+          color: "#6b7280",
+          marginTop: "1.5rem"
+        }}>
+          Country Explorer by <span style={{ color: "#3b82f6", fontWeight: "500" }}>Lasiru Minruk</span>
         </p>
       </div>
     </div>

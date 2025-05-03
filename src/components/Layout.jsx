@@ -3,16 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useFavorites } from "../contexts/FavoritesContext";
 import { useAuth } from "../contexts/AuthContext";
+import { FaHeart, FaUser, FaSignOutAlt } from "react-icons/fa";
 
-// Main layout component with header, main content, and footer
 const Layout = ({ children }) => {
-  // Get favorites and auth context hooks
   const { favorites } = useFavorites();
   const { currentUser, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Handle favorites button click
   const handleFavoritesClick = () => {
     if (location.pathname !== "/") {
       localStorage.setItem("showFavoritesOnly", "true");
@@ -22,61 +20,133 @@ const Layout = ({ children }) => {
     }
   };
 
+  const handleLogout = () => logout();
+
   return (
-    <div className="bg-gradient-to-b from-white via-blue-50 to-white min-h-screen text-gray-800 flex flex-col">
+    <div
+      style={{
+        background: "linear-gradient(to bottom, white, #f0f9ff, white)",
+        minHeight: "100vh",
+        color: "#1f2937",
+        display: "flex",
+        flexDirection: "column",
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          
-          {/* Brand Name with Hover Effect */}
+      <header
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(10px)",
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+          borderBottom: "1px solid #e5e7eb",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1280px",
+            margin: "0 auto",
+            padding: "0.5rem 1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "0.75rem",
+          }}
+        >
           <Link
             to="/"
-            className="text-xl sm:text-2xl font-bold text-blue-700 hover:text-red-600 hover:scale-110 transition duration-200 ease-in-out transform"
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: "700",
+              color: "#1d4ed8",
+              textDecoration: "none",
+            }}
           >
             Country Explorer
           </Link>
 
-          <div className="flex items-center gap-3 sm:gap-5">
-            {/* Favorites Button */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <motion.button
               onClick={handleFavoritesClick}
-              className="relative bg-pink-100 hover:bg-pink-200 text-pink-700 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium shadow-sm transition"
               whileHover={{ scale: 1.05 }}
+              style={{
+                position: "relative",
+                backgroundColor: "#fce7f3",
+                color: "#be185d",
+                padding: "0.5rem 1rem",
+                borderRadius: "9999px",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                border: "none",
+                cursor: "pointer",
+              }}
             >
-              💖 Favorites
+              <FaHeart />
+              Favorites
               {favorites.length > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="absolute -top-2 -right-2 bg-pink-600 text-white text-xs font-bold rounded-full px-1.5 py-[1px]"
+                  style={{
+                    position: "absolute",
+                    top: "-8px",
+                    right: "-8px",
+                    backgroundColor: "#db2777",
+                    color: "white",
+                    fontSize: "0.75rem",
+                    fontWeight: "700",
+                    borderRadius: "9999px",
+                    padding: "2px 6px",
+                    lineHeight: 1,
+                  }}
                 >
                   {favorites.length}
                 </motion.span>
               )}
             </motion.button>
 
-            {/* Auth Buttons */}
             {currentUser ? (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-700 hidden sm:block">
-                  {currentUser.email}
-                </span>
-                <button
-                  onClick={() => {
-                    logout();
-                    navigate("/login");
-                  }}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md text-sm shadow-sm transition"
-                >
-                  Logout
-                </button>
-              </div>
+              <button
+                onClick={handleLogout}
+                style={{
+                  backgroundColor: "#ef4444",
+                  color: "#fff",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.375rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <FaSignOutAlt />
+                Logout
+              </button>
             ) : (
               <Link
                 to="/login"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm shadow-sm transition"
+                style={{
+                  backgroundColor: "#3b82f6",
+                  color: "white",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.375rem",
+                  fontSize: "0.875rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  textDecoration: "none",
+                }}
               >
+                <FaUser />
                 Login
               </Link>
             )}
@@ -84,14 +154,30 @@ const Layout = ({ children }) => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-6">
+      {/* Main */}
+      <main
+        style={{
+          flexGrow: 1,
+          maxWidth: "1280px",
+          width: "100%",
+          margin: "0 auto",
+          padding: "1rem",
+        }}
+      >
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
-        © {new Date().getFullYear()} Country Explorer. Created by Lasiru Minruk.
+      <footer
+        style={{
+          textAlign: "center",
+          padding: "1rem",
+          fontSize: "0.75rem",
+          color: "#6b7280",
+          borderTop: "1px solid #e5e7eb",
+        }}
+      >
+        © 2024 Country Explorer. All rights reserved.
       </footer>
     </div>
   );

@@ -77,27 +77,64 @@ const Home = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="p-4 sm:p-6 max-w-7xl mx-auto relative bg-gray-100 min-h-screen"
+      style={{
+        padding: "1rem",
+        maxWidth: "1280px",
+        margin: "0 auto",
+        backgroundColor: "#f3f4f6",
+        minHeight: "100vh",
+        position: "relative"
+      }}
     >
       {/* Controls */}
-      <div className="flex flex-col md:flex-row flex-wrap gap-4 justify-between mb-10">
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        marginBottom: "2.5rem"
+      }}>
         {/* Search */}
-        <div className="relative w-full md:w-[45%]">
-          <FaSearch className="absolute left-3 top-3 text-gray-400" />
+        <div style={{ position: "relative", width: "100%" }}>
+          <FaSearch style={{
+            position: "absolute",
+            left: "0.75rem",
+            top: "0.75rem",
+            color: "#9ca3af"
+          }} />
           <input
             type="text"
             placeholder="Search by country name..."
-            className="pl-10 pr-4 py-3 w-full rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+            style={{
+              padding: "0.75rem 1rem 0.75rem 2.5rem",
+              width: "100%",
+              borderRadius: "0.75rem",
+              border: "1px solid #d1d5db",
+              outline: "none",
+              transition: "all 0.2s"
+            }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
         {/* Region Filter */}
-        <div className="relative w-full md:w-[25%]">
-          <FaGlobe className="absolute left-3 top-3 text-gray-400" />
+        <div style={{ position: "relative", width: "100%" }}>
+          <FaGlobe style={{
+            position: "absolute",
+            left: "0.75rem",
+            top: "0.75rem",
+            color: "#9ca3af"
+          }} />
           <select
-            className="pl-10 pr-4 py-3 w-full rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+            style={{
+              padding: "0.75rem 1rem 0.75rem 2.5rem",
+              width: "100%",
+              borderRadius: "0.75rem",
+              border: "1px solid #d1d5db",
+              backgroundColor: "white",
+              outline: "none",
+              transition: "all 0.2s"
+            }}
             value={region}
             onChange={(e) => setRegion(e.target.value)}
           >
@@ -113,25 +150,47 @@ const Home = () => {
         {/* Favorites Toggle */}
         <button
           onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-          className={`w-full md:w-[25%] flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium border transition text-sm shadow-sm ${
-            showFavoritesOnly
-              ? "bg-pink-100 text-pink-700 border-pink-400"
-              : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
-          }`}
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            padding: "0.75rem 1rem",
+            borderRadius: "0.75rem",
+            fontWeight: "500",
+            border: "1px solid",
+            fontSize: "0.875rem",
+            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+            backgroundColor: showFavoritesOnly ? "#fce7f3" : "white",
+            color: showFavoritesOnly ? "#be185d" : "#4b5563",
+            borderColor: showFavoritesOnly ? "#f472b6" : "#d1d5db"
+          }}
         >
-          <FaHeart className={showFavoritesOnly ? "text-pink-500" : "text-gray-400"} />
+          <FaHeart style={{ color: showFavoritesOnly ? "#ec4899" : "#9ca3af" }} />
           {showFavoritesOnly ? "Showing Favorites" : "Show Favorites Only"}
         </button>
       </div>
 
       {/* Country Grid */}
       {loading ? (
-        <div className="text-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 mx-auto"></div>
-          <p className="text-gray-500 mt-4">Loading countries...</p>
+        <div style={{ textAlign: "center", padding: "5rem 0" }}>
+          <div style={{
+            animation: "spin 1s linear infinite",
+            borderRadius: "50%",
+            height: "4rem",
+            width: "4rem",
+            borderTop: "4px solid #3b82f6",
+            margin: "0 auto"
+          }}></div>
+          <p style={{ color: "#6b7280", marginTop: "1rem" }}>Loading countries...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+          gap: "1.5rem"
+        }}>
           {filtered.length > 0 ? (
             filtered.map((country) => (
               <motion.div
@@ -145,9 +204,11 @@ const Home = () => {
               </motion.div>
             ))
           ) : (
-            <div className="text-center text-gray-500 col-span-full">
-              <p className="text-lg">😔 No countries found</p>
-              <p className="text-sm mt-1">Try clearing your filters or search again.</p>
+            <div style={{ textAlign: "center", color: "#6b7280", gridColumn: "1 / -1" }}>
+              <p style={{ fontSize: "1.125rem" }}>😔 No countries found</p>
+              <p style={{ fontSize: "0.875rem", marginTop: "0.25rem" }}>
+                Try clearing your filters or search again.
+              </p>
             </div>
           )}
         </div>
@@ -160,10 +221,23 @@ const Home = () => {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 300 }}
-          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg z-50 transition transform hover:scale-110"
+          style={{
+            position: "fixed",
+            bottom: "1.5rem",
+            right: "1.5rem",
+            backgroundColor: "#2563eb",
+            color: "white",
+            padding: "0.75rem",
+            borderRadius: "50%",
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            zIndex: 50,
+            transition: "transform 0.2s",
+            border: "none",
+            cursor: "pointer"
+          }}
           aria-label="Back to top"
         >
-          <FaArrowUp className="text-lg" />
+          <FaArrowUp style={{ fontSize: "1.125rem" }} />
         </motion.button>
       )}
     </motion.div>

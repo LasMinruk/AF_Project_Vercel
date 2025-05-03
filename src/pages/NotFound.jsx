@@ -1,29 +1,53 @@
 // Import React and required dependencies
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 
 // 404 Not Found page component
 const NotFound = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen flex flex-col justify-center items-center bg-gray-100 px-6 text-center"
-    >
-      <h1 className="text-6xl font-bold text-blue-600 mb-4">404</h1>
-      <p className="text-xl text-gray-700 mb-2">Oops! Page Not Found</p>
-      <p className="text-sm text-gray-500 mb-6">
-        The page you are looking for doesn't exist or has been moved.
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#f3f4f6",
+      padding: "0 1.5rem",
+      textAlign: "center"
+    }}>
+      <h1 style={{
+        fontSize: "3.75rem",
+        fontWeight: "700",
+        color: "#2563eb",
+        marginBottom: "1rem"
+      }}>404</h1>
+      <p style={{
+        fontSize: "1.25rem",
+        color: "#374151",
+        marginBottom: "0.5rem"
+      }}>Oops! Page Not Found</p>
+      <p style={{
+        fontSize: "0.875rem",
+        color: "#6b7280",
+        marginBottom: "1.5rem"
+      }}>
+        The page you're looking for doesn't exist or has been moved.
       </p>
       <Link
         to="/"
-        className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition"
+        style={{
+          display: "inline-block",
+          backgroundColor: "#2563eb",
+          color: "white",
+          fontWeight: "500",
+          padding: "0.75rem 1.5rem",
+          borderRadius: "0.5rem",
+          transition: "all 0.2s"
+        }}
       >
-        ⬅️ Back to Home
+        Go Back Home
       </Link>
-    </motion.div>
+    </div>
   );
 };
 

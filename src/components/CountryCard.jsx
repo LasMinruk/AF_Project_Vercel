@@ -1,70 +1,99 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../contexts/FavoritesContext";
-import { useAuth } from "../contexts/AuthContext";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
+import { FaHeart } from "react-icons/fa";
 
 // Component for displaying country information in a card format
 const CountryCard = ({ country }) => {
-  // Get favorites and auth context hooks
-  const { toggleFavorite, isFavorite } = useFavorites();
-  const { currentUser } = useAuth();
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
+  const isFavorite = favorites.some((fav) => fav.cca3 === country.cca3);
 
   if (!country) return null;
 
-  // Check if country is in favorites
-  const fav = isFavorite(country.cca3);
-
   // Handle favorite button click
   const handleFavoriteClick = (e) => {
-    e.stopPropagation();
     e.preventDefault();
-    if (!currentUser) return;
-    toggleFavorite(country);
+    if (isFavorite) {
+      removeFavorite(country.cca3);
+    } else {
+      addFavorite(country);
+    }
   };
 
   return (
     <Link
       to={`/country/${country.cca3}`}
-      className="relative bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 block"
+      style={{
+        position: "relative",
+        backgroundColor: "white",
+        borderRadius: "0.5rem",
+        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+        padding: "1rem",
+        transition: "all 0.3s",
+        display: "block",
+        textDecoration: "none"
+      }}
     >
-      {/* Favorite Button */}
       <button
         onClick={handleFavoriteClick}
-        data-tooltip-id={`tooltip-${country.cca3}`}
-        data-tooltip-content={
-          currentUser
-            ? fav
-              ? "Remove from Favorites"
-              : "Add to Favorites"
-            : "First you have to login for save favourite"
-        }
-        className="absolute top-2 right-2 text-xl z-10 bg-white bg-opacity-90 px-2 py-1 rounded-full"
+        style={{
+          position: "absolute",
+          top: "0.5rem",
+          right: "0.5rem",
+          fontSize: "1.25rem",
+          backgroundColor: "white",
+          opacity: 0.9,
+          padding: "0.25rem 0.5rem",
+          borderRadius: "9999px",
+          border: "none",
+          cursor: "pointer",
+          zIndex: 10
+        }}
       >
-        {fav ? "💖" : "🤍"}
+        <FaHeart style={{ color: isFavorite ? "#ec4899" : "#9ca3af" }} />
       </button>
-      <Tooltip id={`tooltip-${country.cca3}`} place="top" />
 
-      {/* Country Flag */}
-      <img
-        src={country.flags?.png}
-        alt={`${country.name?.common} Flag`}
-        className="w-full h-40 object-cover rounded mb-3"
-      />
+      <div style={{ marginBottom: "1rem" }}>
+        <img
+          src={country.flags.png}
+          alt={`${country.name.common} flag`}
+          style={{
+            width: "100%",
+            height: "160px",
+            objectFit: "cover",
+            borderRadius: "0.375rem"
+          }}
+        />
+      </div>
 
-      {/* Country Info */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-1">
-        {country.name?.common}
+      <h2 style={{
+        fontSize: "1.125rem",
+        fontWeight: "600",
+        color: "#1f2937",
+        marginBottom: "0.25rem"
+      }}>
+        {country.name.common}
       </h2>
-      <p className="text-sm text-gray-700">
+
+      <p style={{
+        fontSize: "0.875rem",
+        color: "#374151"
+      }}>
+        <strong>Population:</strong> {country.population.toLocaleString()}
+      </p>
+
+      <p style={{
+        fontSize: "0.875rem",
+        color: "#374151"
+      }}>
+        <strong>Region:</strong> {country.region}
+      </p>
+
+      <p style={{
+        fontSize: "0.875rem",
+        color: "#374151"
+      }}>
         <strong>Capital:</strong> {country.capital?.[0] || "N/A"}
-      </p>
-      <p className="text-sm text-gray-700">
-        <strong>Region:</strong> {country.region || "N/A"}
-      </p>
-      <p className="text-sm text-gray-700">
-        <strong>Population:</strong> {country.population?.toLocaleString() || "N/A"}
       </p>
     </Link>
   );
