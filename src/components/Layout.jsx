@@ -69,7 +69,7 @@ const Layout = ({ children }) => {
               flex: "1 1 auto",
             }}
           >
-             Country Explorer
+            Country Explorer
           </Link>
 
           <div
@@ -194,7 +194,7 @@ const Layout = ({ children }) => {
           borderTop: "1px solid #e5e7eb",
         }}
       >
-        © {new Date().getFullYear()} Country Explorer. All rights reserved.
+        © {new Date().getFullYear()} Country Explorer. All rights reserved. Created by <span style={{ color: "#1d4ed8", fontWeight: "500" }}>Lasiru</span>
       </footer>
     </div>
   );
