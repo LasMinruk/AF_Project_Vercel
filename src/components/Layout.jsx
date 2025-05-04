@@ -36,13 +36,13 @@ const Layout = ({ children }) => {
       {/* Header */}
       <header
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(255, 255, 255, 0.85)",
+          backdropFilter: "blur(10px)",
           position: "sticky",
           top: 0,
           zIndex: 50,
-          boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
           borderBottom: "1px solid #e5e7eb",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
           width: "100%",
         }}
       >
@@ -50,35 +50,46 @@ const Layout = ({ children }) => {
           style={{
             maxWidth: "1280px",
             margin: "0 auto",
-            padding: "0.5rem 1rem",
+            padding: "0.75rem 1.25rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            gap: "0.5rem",
+            gap: "0.75rem",
           }}
         >
           <Link
             to="/"
             style={{
-              fontSize: "clamp(1.25rem, 4vw, 1.5rem)",
+              fontSize: "clamp(1.3rem, 4vw, 1.6rem)",
               fontWeight: "700",
               color: "#1d4ed8",
-              transition: "all 0.2s",
               textDecoration: "none",
-              display: "inline-block",
-              whiteSpace: "nowrap",
+              position: "relative",
+              transition: "all 0.3s",
             }}
             onMouseEnter={(e) => {
               e.target.style.color = "#ef4444";
-              e.target.style.transform = "scale(1.1)";
             }}
             onMouseLeave={(e) => {
               e.target.style.color = "#1d4ed8";
-              e.target.style.transform = "scale(1)";
             }}
           >
             Country Explorer
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                bottom: -2,
+                width: "100%",
+                height: "2px",
+                backgroundColor: "#ef4444",
+                transform: "scaleX(0)",
+                transformOrigin: "left",
+                transition: "transform 0.3s ease-in-out",
+              }}
+              className="underline-hover"
+            />
           </Link>
 
           <div
@@ -96,18 +107,17 @@ const Layout = ({ children }) => {
               whileHover={{ scale: 1.05 }}
               style={{
                 position: "relative",
-                backgroundColor: "#fce7f3",
+                backgroundColor: "#fdf2f8",
                 color: "#be185d",
-                padding: "0.375rem 0.75rem",
+                padding: "0.4rem 0.9rem",
                 borderRadius: "9999px",
                 fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
                 fontWeight: "500",
-                boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-                transition: "all 0.2s",
                 display: "flex",
                 alignItems: "center",
-                gap: "0.5rem",
-                whiteSpace: "nowrap",
+                gap: "0.4rem",
+                border: "1px solid #f9a8d4",
+                cursor: "pointer",
               }}
             >
               <FaHeart />
@@ -116,14 +126,14 @@ const Layout = ({ children }) => {
                 <span
                   style={{
                     position: "absolute",
-                    top: "-0.5rem",
-                    right: "-0.5rem",
+                    top: "-0.4rem",
+                    right: "-0.6rem",
                     backgroundColor: "#db2777",
-                    color: "white",
-                    fontSize: "0.75rem",
+                    color: "#fff",
+                    fontSize: "0.7rem",
                     fontWeight: "700",
                     borderRadius: "9999px",
-                    padding: "0.125rem 0.375rem",
+                    padding: "0.15rem 0.45rem",
                     minWidth: "1.25rem",
                     textAlign: "center",
                   }}
@@ -133,38 +143,41 @@ const Layout = ({ children }) => {
               )}
             </motion.button>
 
-            {/* Auth buttons */}
+            {/* Auth */}
             {currentUser ? (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <span
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                {/* User Avatar (first letter) */}
+                <div
                   style={{
-                    fontSize: "0.875rem",
-                    color: "#374151",
-                    display: "none",
+                    backgroundColor: "#e0f2fe",
+                    color: "#0369a1",
+                    fontWeight: "700",
+                    borderRadius: "9999px",
+                    width: "2rem",
+                    height: "2rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.9rem",
                   }}
+                  title={currentUser.email}
                 >
-                  {currentUser.email}
-                </span>
+                  {currentUser.email[0].toUpperCase()}
+                </div>
                 <button
                   onClick={handleLogout}
                   style={{
                     backgroundColor: "#ef4444",
-                    color: "white",
-                    padding: "0.375rem 0.75rem",
-                    borderRadius: "0.375rem",
+                    color: "#fff",
+                    padding: "0.4rem 0.9rem",
+                    borderRadius: "0.5rem",
                     fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
-                    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-                    transition: "all 0.2s",
+                    fontWeight: "500",
                     display: "flex",
                     alignItems: "center",
                     gap: "0.5rem",
-                    whiteSpace: "nowrap",
+                    border: "none",
+                    cursor: "pointer",
                   }}
                 >
                   <FaSignOutAlt />
@@ -175,17 +188,15 @@ const Layout = ({ children }) => {
               <Link
                 to="/login"
                 style={{
-                  backgroundColor: "#3b82f6",
+                  backgroundColor: "#2563eb",
                   color: "white",
-                  padding: "0.375rem 0.75rem",
-                  borderRadius: "0.375rem",
+                  padding: "0.4rem 0.9rem",
+                  borderRadius: "0.5rem",
                   fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
-                  boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-                  transition: "all 0.2s",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  whiteSpace: "nowrap",
+                  textDecoration: "none",
                 }}
               >
                 <FaUser />
@@ -196,14 +207,14 @@ const Layout = ({ children }) => {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main content */}
       <main
         style={{
           flexGrow: 1,
           width: "100%",
           maxWidth: "1280px",
           margin: "0 auto",
-          padding: "0.5rem 1rem 1.5rem",
+          padding: "1rem 1.25rem 2rem",
         }}
       >
         {children}
@@ -213,13 +224,14 @@ const Layout = ({ children }) => {
       <footer
         style={{
           textAlign: "center",
-          fontSize: "clamp(0.625rem, 2vw, 0.75rem)",
+          fontSize: "clamp(0.7rem, 2vw, 0.875rem)",
           color: "#6b7280",
-          padding: "1rem 0",
+          padding: "1.25rem 0",
           borderTop: "1px solid #e5e7eb",
         }}
       >
-        © {new Date().getFullYear()} Country Explorer. All rights reserved. Created by <span style={{ color: "#1d4ed8", fontWeight: "500" }}>Lasiru</span>
+        © {new Date().getFullYear()} Country Explorer. All rights reserved. Created by{" "}
+        <span style={{ color: "#1d4ed8", fontWeight: "600" }}>Lasiru</span>
       </footer>
     </div>
   );
