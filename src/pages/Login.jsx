@@ -25,7 +25,7 @@ const Login = () => {
       alignItems: "center",
       justifyContent: "center",
       padding: "0 1rem",
-      backgroundImage: `url("https://img.freepik.com/free-vector/minimal-world-map-isolated-white-background-with-shadow_1017-42608.jpg?t=st=1746195268~exp=1746198868~hmac=1a08efc4969cca22f324949f86fd30721a5897018ed03dc02e9b4780d67cb235&w=1800")`,
+      backgroundImage: `url("https://img.freepik.com/free-vector/clean-black-world-map-silhouette-style-template-design_1017-46154.jpg?t=st=1746338836~exp=1746342436~hmac=ea33b81b90c2cf55fc9bca91169cebd50ad5fcff1e62b78a404165173c19ee88&w=1380")`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat"
