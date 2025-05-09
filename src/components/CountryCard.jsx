@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../contexts/FavoritesContext";
+import { useAuth } from "../contexts/AuthContext";
 import { FaHeart } from "react-icons/fa";
 
 const CountryCard = ({ country }) => {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
+  const { currentUser } = useAuth();
   const isFavorite = favorites.some((fav) => fav.cca3 === country.cca3);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   if (!country) return null;
 
   const handleFavoriteClick = (e) => {
     e.preventDefault();
+    if (!currentUser) {
+      setShowLoginPopup(true);
+      return;
+    }
     isFavorite ? removeFavorite(country.cca3) : addFavorite(country);
+  };
+
+  const handleHeartMouseEnter = () => {
+    if (!currentUser) setShowLoginPopup(true);
+  };
+
+  const handleHeartMouseLeave = () => {
+    setShowLoginPopup(false);
   };
 
   return (
@@ -35,24 +50,47 @@ const CountryCard = ({ country }) => {
       onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
     >
       {/* Favorite Button */}
-      <button
-        onClick={handleFavoriteClick}
-        style={{
-          position: "absolute",
-          top: "0.75rem",
-          right: "0.75rem",
-          backgroundColor: "#fff",
-          border: "1px solid #e5e7eb",
-          borderRadius: "9999px",
-          padding: "0.4rem",
-          cursor: "pointer",
-          zIndex: 10,
-        }}
-        title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-      >
-        <FaHeart style={{ color: isFavorite ? "#ef4444" : "#9ca3af", fontSize: "1rem" }} />
-      </button>
-
+      <div style={{ position: "relative" }}>
+        <button
+          onClick={handleFavoriteClick}
+          onMouseEnter={handleHeartMouseEnter}
+          onMouseLeave={handleHeartMouseLeave}
+          style={{
+            position: "absolute",
+            top: "0.75rem",
+            right: "0.75rem",
+            backgroundColor: "#fff",
+            border: "1px solid #e5e7eb",
+            borderRadius: "9999px",
+            padding: "0.4rem",
+            cursor: "pointer",
+            zIndex: 10,
+          }}
+          title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+        >
+          <FaHeart style={{ color: isFavorite ? "#ef4444" : "#9ca3af", fontSize: "1rem" }} />
+        </button>
+        {/* Login Required Popup */}
+        {showLoginPopup && !currentUser && (
+          <div style={{
+            position: "absolute",
+            top: "-2.5rem",
+            right: 0,
+            left: "auto",
+            background: "#ef4444",
+            color: "white",
+            padding: "0.5rem 1.2rem",
+            borderRadius: "0.75rem",
+            fontWeight: 500,
+            fontSize: "0.95rem",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.10)",
+            zIndex: 100,
+            whiteSpace: "nowrap"
+          }}>
+            First you have to login for save favourites
+          </div>
+        )}
+      </div>
       {/* Flag */}
       <div
         style={{
@@ -73,7 +111,6 @@ const CountryCard = ({ country }) => {
           }}
         />
       </div>
-
       {/* Details */}
       <div style={{ padding: "0 0.25rem" }}>
         <h2

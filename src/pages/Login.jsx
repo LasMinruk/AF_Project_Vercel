@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -12,7 +13,11 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email); // assuming login(email) works without password
-      navigate("/");
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/");
+      }, 2000);
     } catch (err) {
       setError("Failed to log in. Please check your credentials.");
     }
@@ -25,11 +30,31 @@ const Login = () => {
       alignItems: "center",
       justifyContent: "center",
       padding: "0 1rem",
-      backgroundImage: `url("https://img.freepik.com/free-vector/clean-black-world-map-silhouette-style-template-design_1017-46154.jpg?t=st=1746338836~exp=1746342436~hmac=ea33b81b90c2cf55fc9bca91169cebd50ad5fcff1e62b78a404165173c19ee88&w=1380")`,
+      backgroundImage: `url("https://cdn.pixabay.com/photo/2014/04/02/14/09/world-map-306338_1280.png")`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat"
     }}>
+      {/* Success Popup */}
+      {showSuccess && (
+        <div style={{
+          position: "fixed",
+          top: "2.5rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "#22c55e",
+          color: "white",
+          padding: "1rem 2.5rem",
+          borderRadius: "0.75rem",
+          fontWeight: 600,
+          fontSize: "1.1rem",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+          zIndex: 2000,
+          letterSpacing: "0.01em"
+        }}>
+          Login successful!
+        </div>
+      )}
       <div style={{
         position: "relative",
         width: "100%",

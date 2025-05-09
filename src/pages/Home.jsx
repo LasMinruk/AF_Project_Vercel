@@ -3,39 +3,67 @@ import CountryCard from "../components/CountryCard";
 import { useFavorites } from "../contexts/FavoritesContext";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { FaHeart, FaSearch, FaGlobe, FaArrowUp } from "react-icons/fa";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
+import {
+  FaHeart,
+  FaSearch,
+  FaGlobe,
+  FaArrowUp,
+  FaLanguage,
+  FaMoneyBillWave,
+  FaSort,
+} from "react-icons/fa";
+import SearchableDropdown from "../components/SearchableDropdown";
 
 const Home = () => {
   const [countries, setCountries] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [region, setRegion] = useState("");
+  const [language, setLanguage] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [sortBy, setSortBy] = useState("");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [languages, setLanguages] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const { favorites } = useFavorites();
 
-  useEffect(() => {
-    const toggleFromHeader = () => setShowFavoritesOnly((prev) => !prev);
-    window.addEventListener("favorites-toggle", toggleFromHeader);
-    return () => window.removeEventListener("favorites-toggle", toggleFromHeader);
-  }, []);
+  const sortOptions = [
+    { value: "", name: "Sort by..." },
+    { value: "population_asc", name: "Population (Low to High)" },
+    { value: "population_desc", name: "Population (High to Low)" },
+    { value: "area_asc", name: "Area (Small to Large)" },
+    { value: "area_desc", name: "Area (Large to Small)" },
+  ];
 
   useEffect(() => {
-    axios
-      .get("https://restcountries.com/v3.1/all")
-      .then((res) => {
-        setCountries(res.data);
-        setFiltered(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching countries:", err);
-        setLoading(false);
+    axios.get("https://restcountries.com/v3.1/all").then((res) => {
+      setCountries(res.data);
+      setFiltered(res.data);
+      setLoading(false);
+
+      const uniqueLanguages = new Set();
+      const uniqueCurrencies = new Set();
+
+      res.data.forEach((country) => {
+        if (country.languages) {
+          Object.entries(country.languages).forEach(([code, name]) => {
+            uniqueLanguages.add(JSON.stringify({ value: code, name }));
+          });
+        }
+        if (country.currencies) {
+          Object.entries(country.currencies).forEach(([code, data]) => {
+            uniqueCurrencies.add(JSON.stringify({ value: code, name: data.name }));
+          });
+        }
       });
+
+      setLanguages(Array.from(uniqueLanguages).map((lang) => JSON.parse(lang)));
+      setCurrencies(Array.from(uniqueCurrencies).map((curr) => JSON.parse(curr)));
+    });
   }, []);
 
   useEffect(() => {
@@ -51,25 +79,90 @@ const Home = () => {
       result = result.filter((c) => c.region === region);
     }
 
+    if (language) {
+      result = result.filter((c) => c.languages && c.languages[language]);
+    }
+
+    if (currency) {
+      result = result.filter((c) => c.currencies && c.currencies[currency]);
+    }
+
     if (showFavoritesOnly) {
       result = result.filter((c) =>
         favorites.some((fav) => fav.cca3 === c.cca3)
       );
     }
 
+    if (sortBy) {
+      result = [...result].sort((a, b) => {
+        switch (sortBy) {
+          case "population_asc":
+            return a.population - b.population;
+          case "population_desc":
+            return b.population - a.population;
+          case "area_asc":
+            return (a.area || 0) - (b.area || 0);
+          case "area_desc":
+            return (b.area || 0) - (a.area || 0);
+          default:
+            return 0;
+        }
+      });
+    }
+
     setFiltered(result);
-  }, [searchTerm, region, showFavoritesOnly, countries, favorites]);
+  }, [
+    searchTerm,
+    region,
+    language,
+    currency,
+    sortBy,
+    showFavoritesOnly,
+    countries,
+    favorites,
+  ]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
-    };
+    const handleScroll = () => setShowScrollTop(window.scrollY > 300);
+    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const getFilterColumns = () => {
+    if (windowWidth <= 600) return 1;
+    if (windowWidth <= 900) return 2;
+    return 5;
+  };
+
+  const getCardColumns = () => {
+    if (windowWidth <= 600) return "repeat(1, 1fr)";
+    if (windowWidth <= 900) return "repeat(2, 1fr)";
+    return "repeat(auto-fit, minmax(240px, 1fr))";
+  };
+
+  const containerWrapper = {
+    display: "flex",
+    justifyContent: "center",
+    padding: "0 1rem",
+    boxSizing: "border-box",
+    width: "100%",
+  };
+
+  const innerContainer = {
+    width: "100%",
+    maxWidth: "1100px",
+  };
+
+  const labelStyle = {
+    fontWeight: 500,
+    marginBottom: "0.5rem",
+    display: "block",
+    fontSize: "0.95rem",
   };
 
   return (
@@ -78,183 +171,255 @@ const Home = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       style={{
-        padding: "1rem",
-        maxWidth: "1280px",
-        margin: "0 auto",
-        backgroundColor: "#f3f4f6",
         minHeight: "100vh",
-        position: "relative"
+        background: "#f6f7fb",
+        padding: "2.5rem 0",
+        width: "100%",
+        boxSizing: "border-box",
+        overflowX: "hidden"
       }}
     >
-      {/* Controls */}
-      <div style={{
-        display: "grid",
-        gap: "1rem",
-        marginBottom: "2.5rem",
-        gridTemplateColumns: "1fr",
-      }}>
-        {/* Search */}
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <FaSearch
+      {/* Filter Panel */}
+      <div style={containerWrapper}>
+        <div style={innerContainer}>
+          <div
             style={{
-              position: "absolute",
-              left: "1rem",
-              color: "#9ca3af",
-              fontSize: "1rem",
-              pointerEvents: "none",
+              background: "#fff",
+              borderRadius: "1.25rem",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.2rem",
             }}
-          />
-          <input
-            type="text"
-            placeholder="Search by country name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "0.75rem 1rem 0.75rem 2.75rem",
-              borderRadius: "0.75rem",
-              border: "1px solid #d1d5db",
-              backgroundColor: "white",
-              fontSize: "0.95rem",
-              color: "#111827",
-              outline: "none",
-              boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-              transition: "all 0.2s ease",
-            }}
-          />
-        </div>
-
-        {/* Region Filter */}
-        <div style={{ position: "relative" }}>
-          <FaGlobe style={{
-            position: "absolute",
-            left: "0.75rem",
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "#9ca3af"
-          }} />
-          <select
-            style={{
-              padding: "0.75rem 1rem 0.75rem 2.5rem",
-              width: "100%",
-              borderRadius: "0.75rem",
-              border: "1px solid #d1d5db",
-              backgroundColor: "white",
-              outline: "none",
-              transition: "all 0.2s"
-            }}
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
           >
-            <option value="">All Regions</option>
-            <option value="Africa">Africa</option>
-            <option value="Americas">Americas</option>
-            <option value="Asia">Asia</option>
-            <option value="Europe">Europe</option>
-            <option value="Oceania">Oceania</option>
-          </select>
-        </div>
+            <h2
+              style={{
+                fontWeight: 700,
+                fontSize: "1.35rem",
+                color: "#2563eb",
+                marginBottom: "1rem",
+              }}
+            >
+              Filter Countries
+            </h2>
 
-        {/* Favorites Toggle */}
-        <button
-          onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.5rem",
-            padding: "0.75rem 1rem",
-            borderRadius: "0.75rem",
-            fontWeight: "500",
-            border: "1px solid",
-            fontSize: "0.875rem",
-            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-            backgroundColor: showFavoritesOnly ? "#fce7f3" : "white",
-            color: showFavoritesOnly ? "#be185d" : "#4b5563",
-            borderColor: showFavoritesOnly ? "#f472b6" : "#d1d5db"
-          }}
-        >
-          <FaHeart style={{ color: showFavoritesOnly ? "#ec4899" : "#9ca3af" }} />
-          {showFavoritesOnly ? "Showing Favorites" : "Show Favorites Only"}
-        </button>
+            <div
+              style={{
+                display: "grid",
+                gap: "1rem",
+                gridTemplateColumns: `repeat(${getFilterColumns()}, 1fr)`,
+              }}
+            >
+              <div>
+                <label style={labelStyle}>Search Countries</label>
+                <div style={{ position: "relative" }}>
+                  <FaSearch
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "1rem",
+                      transform: "translateY(-50%)",
+                      color: "#9ca3af",
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Search by name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                      padding: "0.75rem 1rem 0.75rem 2.5rem",
+                      borderRadius: "0.9rem",
+                      width: "100%",
+                      background: "#f8fafc",
+                      border: "1.5px solid #e5e7eb",
+                      outline: "none",
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={labelStyle}>Region</label>
+                <div style={{ position: "relative" }}>
+                  <FaGlobe
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "0.75rem",
+                      transform: "translateY(-50%)",
+                      color: "#9ca3af",
+                    }}
+                  />
+                  <select
+                    value={region}
+                    onChange={(e) => setRegion(e.target.value)}
+                    style={{
+                      padding: "0.75rem 1rem 0.75rem 2.5rem",
+                      borderRadius: "0.9rem",
+                      width: "100%",
+                      background: "#f8fafc",
+                      border: "1.5px solid #e5e7eb",
+                      outline: "none",
+                    }}
+                  >
+                    <option value="">All Regions</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Americas">Americas</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Oceania">Oceania</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label style={labelStyle}>Language</label>
+                <SearchableDropdown
+                  options={languages}
+                  value={language}
+                  onChange={setLanguage}
+                  placeholder="Select Language"
+                  icon={FaLanguage}
+                  labelKey="name"
+                  valueKey="value"
+                />
+              </div>
+
+              <div>
+                <label style={labelStyle}>Currency</label>
+                <SearchableDropdown
+                  options={currencies}
+                  value={currency}
+                  onChange={setCurrency}
+                  placeholder="Select Currency"
+                  icon={FaMoneyBillWave}
+                  labelKey="name"
+                  valueKey="value"
+                />
+              </div>
+
+              <div>
+                <label style={labelStyle}>Sort By</label>
+                <div style={{ position: "relative" }}>
+                  <FaSort
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "0.75rem",
+                      transform: "translateY(-50%)",
+                      color: "#9ca3af",
+                    }}
+                  />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    style={{
+                      padding: "0.75rem 1rem 0.75rem 2.5rem",
+                      borderRadius: "0.9rem",
+                      width: "100%",
+                      background: "#f8fafc",
+                      border: "1.5px solid #e5e7eb",
+                      outline: "none",
+                    }}
+                  >
+                    {sortOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+              style={{
+                marginTop: "1rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                padding: "0.85rem",
+                borderRadius: "0.9rem",
+                fontWeight: "500",
+                background: "#f8fafc",
+                border: "1.5px solid #e5e7eb",
+                color: showFavoritesOnly ? "#be185d" : "#4b5563",
+              }}
+            >
+              <FaHeart style={{ color: showFavoritesOnly ? "#ec4899" : "#9ca3af" }} />
+              {showFavoritesOnly ? "Showing Favorites" : "Show Favorites Only"}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Country Grid */}
-      {loading ? (
-        <div style={{ textAlign: "center", padding: "5rem 0" }}>
-          <div style={{
-            animation: "spin 1s linear infinite",
-            borderRadius: "50%",
-            height: "4rem",
-            width: "4rem",
-            border: "4px solid #e5e7eb",
-            borderTop: "4px solid #3b82f6",
-            margin: "0 auto"
-          }} />
-          <p style={{ color: "#6b7280", marginTop: "1rem" }}>Loading countries...</p>
+      <div style={containerWrapper}>
+        <div style={innerContainer}>
+          <div
+            style={{
+              marginTop: "2rem",
+              display: "grid",
+              gridTemplateColumns: getCardColumns(),
+              gap: "2rem",
+            }}
+          >
+            {loading ? (
+              <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>
+                <p>Loading countries...</p>
+              </div>
+            ) : filtered.length > 0 ? (
+              filtered.map((country) => (
+                <motion.div
+                  key={country.cca3}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <CountryCard country={country} />
+                </motion.div>
+              ))
+            ) : (
+              <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>
+                <p>No countries found</p>
+              </div>
+            )}
+          </div>
         </div>
-      ) : (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "1.5rem"
-        }}>
-          {filtered.length > 0 ? (
-            filtered.map((country) => (
-              <motion.div
-                key={country.cca3}
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 30 }}
-                transition={{ duration: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <CountryCard country={country} />
-              </motion.div>
-            ))
-          ) : (
-            <div style={{ textAlign: "center", color: "#6b7280", gridColumn: "1 / -1" }}>
-              <p style={{ fontSize: "1.125rem" }}>😔 No countries found</p>
-              <p style={{ fontSize: "0.875rem", marginTop: "0.25rem" }}>
-                Try clearing your filters or search again.
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+      </div>
 
-      {/* Back to Top Button */}
+      {/* Scroll to Top */}
       {showScrollTop && (
-        <motion.button
-          onClick={scrollToTop}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 300 }}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           style={{
             position: "fixed",
-            bottom: "1.5rem",
-            right: "1.5rem",
-            backgroundColor: "#2563eb",
+            bottom: "2rem",
+            right: "2rem",
+            backgroundColor: "#3b82f6",
             color: "white",
-            padding: "0.75rem",
+            width: "3.5rem",
+            height: "3.5rem",
             borderRadius: "50%",
+            display: "grid",
+            placeItems: "center",
             boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-            zIndex: 50,
-            transition: "transform 0.2s",
             border: "none",
-            cursor: "pointer"
+            cursor: "pointer",
+            transition: "all 0.2s",
+            zIndex: 1000,
+            padding: 0
           }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#2563eb")}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#3b82f6")}
           aria-label="Back to top"
         >
-          <FaArrowUp style={{ fontSize: "1.125rem" }} />
-        </motion.button>
+          <FaArrowUp style={{ fontSize: "1.7rem", margin: 0, padding: 0, display: "block" }} />
+        </button>
       )}
     </motion.div>
   );
