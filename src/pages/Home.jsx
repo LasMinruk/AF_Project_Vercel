@@ -219,48 +219,51 @@ const Home = () => {
             <div
               style={{
                 display: "grid",
-                gap: windowWidth <= 480 ? "0.75rem" : "1rem",
-                gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
-                                   windowWidth <= 768 ? "repeat(2, 1fr)" : 
-                                   windowWidth <= 1024 ? "repeat(3, 1fr)" : 
-                                   "repeat(4, 1fr)",
-                marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem"
+                gap: "1rem", // Consistent spacing between elements
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", // Responsive grid layout
+                marginBottom: "1.5rem",
               }}
             >
               {/* Search Input */}
-              <div style={{ gridColumn: windowWidth <= 480 ? "1 / -1" : "1 / -1" }}>
-                <label style={{
-                  fontWeight: 600,
-                  marginBottom: "0.5rem",
-                  display: "block",
-                  fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
-                  color: "#1e293b"
-                }}>Search Countries</label>
+              <div>
+                <label
+                  style={{
+                    fontWeight: 600,
+                    marginBottom: "0.5rem",
+                    display: "block",
+                    fontSize: "0.95rem",
+                    color: "#1e293b",
+                  }}
+                >
+                  Search Countries
+                </label>
                 <div style={{ position: "relative" }}>
-                  <FaSearch style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: windowWidth <= 480 ? "0.75rem" : "1rem",
-                    transform: "translateY(-50%)",
-                    color: "#94a3b8",
-                    fontSize: windowWidth <= 480 ? "0.9rem" : "1rem"
-                  }} />
+                  <FaSearch
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "0.75rem",
+                      transform: "translateY(-50%)",
+                      color: "#94a3b8",
+                      fontSize: "1rem",
+                    }}
+                  />
                   <input
                     type="text"
                     placeholder="Search by name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
-                      padding: windowWidth <= 480 ? "0.6rem 0.75rem 0.6rem 2.25rem" : "0.8rem 1rem 0.8rem 2.5rem",
-                      borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
+                      padding: "0.6rem 0.75rem 0.6rem 2.25rem",
+                      borderRadius: "0.9rem",
                       width: "100%",
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
                       outline: "none",
-                      fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
+                      fontSize: "0.95rem",
                       transition: "all 0.2s ease-in-out",
                       boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                      color: "#1e293b"
+                      color: "#1e293b",
                     }}
                   />
                 </div>
@@ -280,56 +283,56 @@ const Home = () => {
                     { value: "Europe", name: "Europe" },
                     { value: "Oceania", name: "Oceania" },
                   ],
-                  icon: FaGlobe
+                  icon: FaGlobe,
                 },
                 {
                   label: "Language",
                   value: language,
                   onChange: setLanguage,
                   options: [{ value: "", name: "All Languages" }, ...languages],
-                  icon: FaLanguage
+                  icon: FaLanguage,
                 },
                 {
                   label: "Currency",
                   value: currency,
                   onChange: setCurrency,
                   options: [{ value: "", name: "All Currencies" }, ...currencies],
-                  icon: FaMoneyBillWave
+                  icon: FaMoneyBillWave,
                 },
                 {
                   label: "Sort By",
                   value: sortBy,
                   onChange: setSortBy,
                   options: sortOptions,
-                  icon: FaSort
-                }
+                  icon: FaSort,
+                },
               ].map((filter, index) => (
-                <div key={index} style={{ 
-                  gridColumn: windowWidth <= 480 ? "1 / -1" : 
-                             windowWidth <= 768 ? (index === 0 ? "1 / -1" : "auto") : 
-                             "auto"
-                }}>
-                  <label style={{
-                    fontWeight: 600,
-                    marginBottom: "0.5rem",
-                    display: "block",
-                    fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
-                    color: "#1e293b"
-                  }}>{filter.label}</label>
+                <div key={index}>
+                  <label
+                    style={{
+                      fontWeight: 600,
+                      marginBottom: "0.5rem",
+                      display: "block",
+                      fontSize: "0.95rem",
+                      color: "#1e293b",
+                    }}
+                  >
+                    {filter.label}
+                  </label>
                   <SearchableDropdown
                     options={filter.options}
                     value={filter.value}
                     onChange={filter.onChange}
                     icon={filter.icon}
                     style={{
-                      fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
-                      padding: windowWidth <= 480 ? "0.6rem 0.75rem" : "0.8rem 1rem",
-                      borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
+                      fontSize: "0.95rem",
+                      padding: "0.6rem 0.75rem",
+                      borderRadius: "0.9rem",
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
                       boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                       color: "#1e293b",
-                      width: "100%"
+                      width: "100%",
                     }}
                   />
                 </div>
