@@ -151,7 +151,7 @@ const Home = () => {
     width: "100%",
     maxWidth: "1440px",
     margin: "0 auto",
-    padding: windowWidth <= 480 ? "1rem" : "2rem",
+    padding: windowWidth <= 480 ? "1rem 0" : windowWidth <= 768 ? "1.5rem 0" : "2.5rem 0",
   };
 
   const innerContainer = {
@@ -175,7 +175,7 @@ const Home = () => {
       style={{
         minHeight: "100vh",
         background: "#f6f7fb",
-        padding: "2.5rem 0",
+        padding: windowWidth <= 480 ? "1rem 0" : windowWidth <= 768 ? "1.5rem 0" : "2.5rem 0",
         width: "100%",
         boxSizing: "border-box",
         overflowX: "hidden"
@@ -187,58 +187,59 @@ const Home = () => {
           <div
             style={{
               backgroundColor: "#ffffff",
-              borderRadius: "1.2rem",
-              padding: windowWidth <= 480 ? "1rem" : "1.5rem",
-              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+              borderRadius: windowWidth <= 480 ? "1rem" : "1.2rem",
+              padding: windowWidth <= 480 ? "0.75rem" : windowWidth <= 768 ? "1rem" : "1.5rem",
+              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
             }}
           >
-            <h2
-              style={{
-                fontWeight: 700,
-                fontSize: windowWidth <= 480 ? "1.2rem" : "1.35rem",
-                color: "#2563eb",
-                marginBottom: "1rem",
-              }}
-            >
+            <h2 style={{
+              fontWeight: 700,
+              fontSize: windowWidth <= 480 ? "1.1rem" : windowWidth <= 768 ? "1.25rem" : "1.35rem",
+              color: "#2563eb",
+              marginBottom: windowWidth <= 480 ? "0.75rem" : "1rem"
+            }}>
               Filter Countries
             </h2>
 
-            <div
-              style={{
-                display: "grid",
-                gap: windowWidth <= 480 ? "0.75rem" : "1rem",
-                gridTemplateColumns: `repeat(${getFilterColumns()}, 1fr)`,
-              }}
-            >
+            <div style={{
+              display: "grid",
+              gap: windowWidth <= 480 ? "0.5rem" : windowWidth <= 768 ? "0.75rem" : "1rem",
+              gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
+                                 windowWidth <= 768 ? "repeat(2, 1fr)" : 
+                                 windowWidth <= 1024 ? "repeat(3, 1fr)" : 
+                                 "repeat(5, 1fr)"
+            }}>
               <div>
                 <label style={{
-                  ...labelStyle,
-                  fontSize: windowWidth <= 480 ? "0.875rem" : "0.9rem",
+                  fontWeight: 500,
+                  marginBottom: windowWidth <= 480 ? "0.35rem" : "0.5rem",
+                  display: "block",
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.85rem" : "0.9rem"
                 }}>Search Countries</label>
                 <div style={{ position: "relative" }}>
-                  <FaSearch
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: windowWidth <= 480 ? "0.75rem" : "1rem",
-                      transform: "translateY(-50%)",
-                      color: "#9ca3af",
-                      fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
-                    }}
-                  />
+                  <FaSearch style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: windowWidth <= 480 ? "0.6rem" : windowWidth <= 768 ? "0.75rem" : "1rem",
+                    transform: "translateY(-50%)",
+                    color: "#9ca3af",
+                    fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem"
+                  }} />
                   <input
                     type="text"
                     placeholder="Search by name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
-                      padding: windowWidth <= 480 ? "0.6rem 0.75rem 0.6rem 2rem" : "0.75rem 1rem 0.75rem 2.5rem",
-                      borderRadius: "0.9rem",
+                      padding: windowWidth <= 480 ? "0.5rem 0.6rem 0.5rem 1.75rem" : 
+                             windowWidth <= 768 ? "0.6rem 0.75rem 0.6rem 2rem" : 
+                             "0.75rem 1rem 0.75rem 2.5rem",
+                      borderRadius: windowWidth <= 480 ? "0.75rem" : "0.9rem",
                       width: "100%",
                       background: "#f8fafc",
                       border: "1.5px solid #e5e7eb",
                       outline: "none",
-                      fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
+                      fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem"
                     }}
                   />
                 </div>
@@ -246,8 +247,10 @@ const Home = () => {
 
               <div>
                 <label style={{
-                  ...labelStyle,
-                  fontSize: windowWidth <= 480 ? "0.875rem" : "0.9rem",
+                  fontWeight: 500,
+                  marginBottom: windowWidth <= 480 ? "0.35rem" : "0.5rem",
+                  display: "block",
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.85rem" : "0.9rem"
                 }}>Region</label>
                 <SearchableDropdown
                   options={[
@@ -262,16 +265,18 @@ const Home = () => {
                   onChange={setRegion}
                   icon={FaGlobe}
                   style={{
-                    fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
-                    padding: windowWidth <= 480 ? "0.6rem 0.75rem" : "0.75rem 1rem",
+                    fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                    padding: windowWidth <= 480 ? "0.5rem 0.6rem" : windowWidth <= 768 ? "0.6rem 0.75rem" : "0.75rem 1rem"
                   }}
                 />
               </div>
 
               <div>
                 <label style={{
-                  ...labelStyle,
-                  fontSize: windowWidth <= 480 ? "0.875rem" : "0.9rem",
+                  fontWeight: 500,
+                  marginBottom: windowWidth <= 480 ? "0.35rem" : "0.5rem",
+                  display: "block",
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.85rem" : "0.9rem"
                 }}>Language</label>
                 <SearchableDropdown
                   options={[{ value: "", name: "All Languages" }, ...languages]}
@@ -279,16 +284,18 @@ const Home = () => {
                   onChange={setLanguage}
                   icon={FaLanguage}
                   style={{
-                    fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
-                    padding: windowWidth <= 480 ? "0.6rem 0.75rem" : "0.75rem 1rem",
+                    fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                    padding: windowWidth <= 480 ? "0.5rem 0.6rem" : windowWidth <= 768 ? "0.6rem 0.75rem" : "0.75rem 1rem"
                   }}
                 />
               </div>
 
               <div>
                 <label style={{
-                  ...labelStyle,
-                  fontSize: windowWidth <= 480 ? "0.875rem" : "0.9rem",
+                  fontWeight: 500,
+                  marginBottom: windowWidth <= 480 ? "0.35rem" : "0.5rem",
+                  display: "block",
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.85rem" : "0.9rem"
                 }}>Currency</label>
                 <SearchableDropdown
                   options={[{ value: "", name: "All Currencies" }, ...currencies]}
@@ -296,16 +303,18 @@ const Home = () => {
                   onChange={setCurrency}
                   icon={FaMoneyBillWave}
                   style={{
-                    fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
-                    padding: windowWidth <= 480 ? "0.6rem 0.75rem" : "0.75rem 1rem",
+                    fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                    padding: windowWidth <= 480 ? "0.5rem 0.6rem" : windowWidth <= 768 ? "0.6rem 0.75rem" : "0.75rem 1rem"
                   }}
                 />
               </div>
 
               <div>
                 <label style={{
-                  ...labelStyle,
-                  fontSize: windowWidth <= 480 ? "0.875rem" : "0.9rem",
+                  fontWeight: 500,
+                  marginBottom: windowWidth <= 480 ? "0.35rem" : "0.5rem",
+                  display: "block",
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.85rem" : "0.9rem"
                 }}>Sort By</label>
                 <SearchableDropdown
                   options={sortOptions}
@@ -313,8 +322,8 @@ const Home = () => {
                   onChange={setSortBy}
                   icon={FaSort}
                   style={{
-                    fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
-                    padding: windowWidth <= 480 ? "0.6rem 0.75rem" : "0.75rem 1rem",
+                    fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                    padding: windowWidth <= 480 ? "0.5rem 0.6rem" : windowWidth <= 768 ? "0.6rem 0.75rem" : "0.75rem 1rem"
                   }}
                 />
               </div>
@@ -323,22 +332,25 @@ const Home = () => {
             <button
               onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
               style={{
-                marginTop: windowWidth <= 480 ? "0.75rem" : "1rem",
+                marginTop: windowWidth <= 480 ? "0.5rem" : windowWidth <= 768 ? "0.75rem" : "1rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "0.5rem",
-                padding: windowWidth <= 480 ? "0.6rem" : "0.85rem",
-                borderRadius: "0.9rem",
+                gap: windowWidth <= 480 ? "0.35rem" : "0.5rem",
+                padding: windowWidth <= 480 ? "0.5rem" : windowWidth <= 768 ? "0.6rem" : "0.85rem",
+                borderRadius: windowWidth <= 480 ? "0.75rem" : "0.9rem",
                 fontWeight: "500",
                 background: "#f8fafc",
                 border: "1.5px solid #e5e7eb",
                 color: showFavoritesOnly ? "#be185d" : "#4b5563",
-                fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
-                width: windowWidth <= 480 ? "100%" : "auto",
+                fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                width: windowWidth <= 480 ? "100%" : "auto"
               }}
             >
-              <FaHeart style={{ color: showFavoritesOnly ? "#ec4899" : "#9ca3af" }} />
+              <FaHeart style={{ 
+                color: showFavoritesOnly ? "#ec4899" : "#9ca3af",
+                fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem"
+              }} />
               {showFavoritesOnly ? "Showing Favorites" : "Show Favorites Only"}
             </button>
           </div>
@@ -350,15 +362,21 @@ const Home = () => {
         <div style={innerContainer}>
           <div
             style={{
-              marginTop: windowWidth <= 480 ? "1.5rem" : "2rem",
+              marginTop: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.25rem" : "2rem",
               display: "grid",
-              gridTemplateColumns: getCardColumns(),
-              gap: windowWidth <= 480 ? "1.5rem" : "2rem",
+              gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
+                                 windowWidth <= 768 ? "repeat(2, 1fr)" : 
+                                 windowWidth <= 1024 ? "repeat(3, 1fr)" : 
+                                 "repeat(4, 1fr)",
+              gap: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.25rem" : "2rem"
             }}
           >
             {loading ? (
               <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>
-                <p style={{ fontSize: windowWidth <= 480 ? "0.875rem" : "1rem" }}>Loading countries...</p>
+                <p style={{ 
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                  color: "#4b5563"
+                }}>Loading countries...</p>
               </div>
             ) : filtered.length > 0 ? (
               filtered.map((country) => (
@@ -373,7 +391,10 @@ const Home = () => {
               ))
             ) : (
               <div style={{ gridColumn: "1 / -1", textAlign: "center" }}>
-                <p style={{ fontSize: windowWidth <= 480 ? "0.875rem" : "1rem" }}>No countries found</p>
+                <p style={{ 
+                  fontSize: windowWidth <= 480 ? "0.8rem" : windowWidth <= 768 ? "0.875rem" : "1rem",
+                  color: "#4b5563"
+                }}>No countries found</p>
               </div>
             )}
           </div>
@@ -389,23 +410,25 @@ const Home = () => {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           style={{
             position: "fixed",
-            bottom: windowWidth <= 480 ? "1rem" : "2rem",
-            right: windowWidth <= 480 ? "1rem" : "2rem",
+            bottom: windowWidth <= 480 ? "0.75rem" : windowWidth <= 768 ? "1rem" : "2rem",
+            right: windowWidth <= 480 ? "0.75rem" : windowWidth <= 768 ? "1rem" : "2rem",
             backgroundColor: "#2563eb",
             color: "white",
             border: "none",
             borderRadius: "50%",
-            width: windowWidth <= 480 ? "2.5rem" : "3rem",
-            height: windowWidth <= 480 ? "2.5rem" : "3rem",
+            width: windowWidth <= 480 ? "2.25rem" : windowWidth <= 768 ? "2.5rem" : "3rem",
+            height: windowWidth <= 480 ? "2.25rem" : windowWidth <= 768 ? "2.5rem" : "3rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
             boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-            zIndex: 1000,
+            zIndex: 1000
           }}
         >
-          <FaArrowUp style={{ fontSize: windowWidth <= 480 ? "1rem" : "1.25rem" }} />
+          <FaArrowUp style={{ 
+            fontSize: windowWidth <= 480 ? "0.875rem" : windowWidth <= 768 ? "1rem" : "1.25rem"
+          }} />
         </motion.button>
       )}
     </motion.div>
