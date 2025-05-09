@@ -220,12 +220,15 @@ const Home = () => {
               style={{
                 display: "grid",
                 gap: windowWidth <= 480 ? "0.75rem" : "1rem",
-                gridTemplateColumns: "1fr",
+                gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
+                                   windowWidth <= 768 ? "repeat(2, 1fr)" : 
+                                   windowWidth <= 1024 ? "repeat(3, 1fr)" : 
+                                   "repeat(4, 1fr)",
                 marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem"
               }}
             >
               {/* Search Input */}
-              <div>
+              <div style={{ gridColumn: windowWidth <= 480 ? "1 / -1" : "1 / -1" }}>
                 <label style={{
                   fontWeight: 600,
                   marginBottom: "0.5rem",
@@ -301,7 +304,11 @@ const Home = () => {
                   icon: FaSort
                 }
               ].map((filter, index) => (
-                <div key={index}>
+                <div key={index} style={{ 
+                  gridColumn: windowWidth <= 480 ? "1 / -1" : 
+                             windowWidth <= 768 ? (index === 0 ? "1 / -1" : "auto") : 
+                             "auto"
+                }}>
                   <label style={{
                     fontWeight: 600,
                     marginBottom: "0.5rem",
@@ -321,7 +328,8 @@ const Home = () => {
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
                       boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                      color: "#1e293b"
+                      color: "#1e293b",
+                      width: "100%"
                     }}
                   />
                 </div>
