@@ -397,8 +397,7 @@ const Home = () => {
                 transition: "all 0.2s ease",
                 width: windowWidth <= 640 ? "100%" : "60%",
                 maxWidth: "350px",
-                margin: windowWidth <= 640 ? "0.7rem auto 0 auto" : "0.8rem auto 0 auto",
-                display: "block",
+                margin: windowWidth <= 640 ? "0.7rem auto 0 auto" : "0.8rem auto 0 auto"
               }}
               onMouseOver={e => (e.currentTarget.style.background = showFavoritesOnly ? "linear-gradient(90deg, #be185d 0%, #ec4899 100%)" : "linear-gradient(90deg, #2563eb 0%, #6366f1 100%)")}
               onMouseOut={e => (e.currentTarget.style.background = showFavoritesOnly ? "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" : "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)")}
