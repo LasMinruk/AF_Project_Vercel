@@ -67,7 +67,7 @@ const Layout = ({ children }) => {
               textDecoration: "none",
               position: "relative",
               transition: "all 0.3s",
-              padding: "0.25rem 0", // increased tap target on mobile
+              padding: "0.25rem 0",
             }}
             onMouseEnter={(e) => {
               e.target.style.color = "#ef4444";
@@ -112,7 +112,7 @@ const Layout = ({ children }) => {
                 position: "relative",
                 backgroundColor: "#fdf2f8",
                 color: "#be185d",
-                padding: "0.6rem 1rem", // increased padding for touch devices
+                padding: "0.6rem 1rem",
                 borderRadius: "9999px",
                 fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
                 fontWeight: "500",
