@@ -219,12 +219,7 @@ const Home = () => {
               style={{
                 display: "grid",
                 gap: windowWidth <= 480 ? "1rem" : "1.5rem",
-                gridTemplateColumns:
-                  windowWidth <= 480
-                    ? "1fr"
-                    : windowWidth <= 900
-                    ? "1fr 1fr"
-                    : "repeat(5, 1fr)",
+                gridTemplateColumns: "1fr",
                 marginBottom: "1.5rem"
               }}
             >
