@@ -128,6 +128,7 @@ const SearchableDropdown = ({
 
       {isOpen && (
         <div
+          className="searchable-dropdown"
           style={{
             position: 'absolute',
             top: '100%',
@@ -222,7 +223,7 @@ const SearchableDropdown = ({
         </div>
       )}
 
-      {/* Responsive style for mobile */}
+      {/* Responsive styles */}
       <style>
         {`
           @media (max-width: 600px) {

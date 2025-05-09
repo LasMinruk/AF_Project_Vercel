@@ -35,15 +35,14 @@ const Layout = ({ children }) => {
     >
       {/* Header */}
       <header
+        className="header-content"
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.85)",
-          backdropFilter: "blur(10px)",
+          backgroundColor: "#ffffff",
+          padding: "1rem 1.25rem",
+          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
           position: "sticky",
           top: 0,
-          zIndex: 50,
-          borderBottom: "1px solid #e5e7eb",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-          width: "100%",
+          zIndex: 100,
         }}
       >
         <div
@@ -68,6 +67,12 @@ const Layout = ({ children }) => {
               position: "relative",
               transition: "all 0.3s",
               padding: "0.25rem 0",
+              marginLeft: "0.2rem",
+              border: "none",
+              outline: "none",
+              background: "none",
+              display: "inline-block",
+              verticalAlign: "middle",
             }}
             onMouseEnter={(e) => {
               e.target.style.color = "#ef4444";
@@ -89,7 +94,8 @@ const Layout = ({ children }) => {
                 transformOrigin: "left",
                 transition: "transform 0.3s ease-in-out",
               }}
-              className="underline-hover"
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scaleX(1)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scaleX(0)'}
             />
           </Link>
 
@@ -235,6 +241,7 @@ const Layout = ({ children }) => {
 
       {/* Main content */}
       <main
+        className="main-content"
         style={{
           flexGrow: 1,
           width: "100%",
@@ -249,6 +256,7 @@ const Layout = ({ children }) => {
 
       {/* Footer */}
       <footer
+        className="footer-content"
         style={{
           textAlign: "center",
           fontSize: "clamp(0.7rem, 2vw, 0.875rem)",
@@ -266,25 +274,19 @@ const Layout = ({ children }) => {
       <style>
         {`
           @media (max-width: 640px) {
-            header div {
+            .header-content div {
               justify-content: center !important;
             }
-            header a, header button {
+            .header-content a, .header-content button {
               font-size: 1rem !important;
               padding: 0.75rem 1.25rem !important;
             }
-            main {
+            .main-content {
               padding: 1rem !important;
             }
-            footer {
-              font-size: 0.75rem !important;
-              padding: 1rem 0.5rem !important;
+            .footer-content {
+              padding: 1rem !important;
             }
-          }
-
-          /* Underline hover effect */
-          .underline-hover:hover {
-            transform: scaleX(1);
           }
         `}
       </style>

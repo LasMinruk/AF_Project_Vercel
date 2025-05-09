@@ -186,32 +186,44 @@ const Home = () => {
         width: "100%",
         maxWidth: "1440px",
         margin: "0 auto",
-        padding: windowWidth <= 480 ? "0.5rem" : windowWidth <= 768 ? "0.75rem" : "1rem"
+        padding: windowWidth <= 480 ? "0.5rem" : windowWidth <= 768 ? "0.75rem" : "1rem",
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
       }}>
         <div style={{
           width: "100%",
-          maxWidth: "1280px",
+          maxWidth: windowWidth <= 480 ? "95vw" : "900px",
           margin: "0 auto"
         }}>
           <div
             style={{
+              width: "100%",
+              maxWidth: windowWidth <= 480 ? "95vw" : "900px",
+              marginLeft: "auto",
+              marginRight: "auto",
               background: "linear-gradient(135deg, #f8fafc 60%, #e0e7ef 100%)",
-              borderRadius: windowWidth <= 480 ? "1rem" : "1.5rem",
-              padding: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.5rem" : "2rem",
-              boxShadow: "0 8px 32px rgba(31, 41, 55, 0.08)",
+              borderRadius: windowWidth <= 480 ? "1.2rem" : "1.5rem",
+              padding: windowWidth <= 480 ? "0.8rem 0.5rem" : windowWidth <= 1024 ? "1rem 1rem" : "1.5rem 1.5rem",
+              boxShadow: "0 8px 32px rgba(31, 41, 55, 0.10)",
               border: "1px solid #e0e7ef",
-              marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem",
-              transition: "all 0.3s ease"
+              marginBottom: windowWidth <= 480 ? "0.8rem" : "1.2rem",
+              transition: "all 0.3s ease",
+              boxSizing: "border-box",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: windowWidth <= 640 ? "center" : "stretch",
             }}
           >
             <h2
               style={{
                 fontWeight: 800,
-                fontSize: windowWidth <= 480 ? "1.2rem" : windowWidth <= 768 ? "1.4rem" : "1.7rem",
+                fontSize: windowWidth <= 480 ? "1.3rem" : windowWidth <= 768 ? "1.5rem" : "1.9rem",
                 color: "#2563eb",
-                marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem",
+                marginBottom: windowWidth <= 480 ? "0.7rem" : "1rem",
                 letterSpacing: "-0.02em",
-                textAlign: windowWidth <= 480 ? "center" : "left"
+                textAlign: windowWidth <= 640 ? "center" : "left",
+                width: "100%",
+                paddingLeft: windowWidth > 640 ? "0.2rem" : 0,
               }}
             >
               Filter Countries
@@ -219,33 +231,50 @@ const Home = () => {
             <div
               style={{
                 display: "grid",
-                gap: "1rem", // Consistent spacing between elements
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", // Responsive grid layout
-                marginBottom: "1.5rem",
+                gap: windowWidth <= 480 ? "0.7rem" : "1rem 1rem",
+                gridTemplateColumns:
+                  windowWidth <= 640
+                    ? "1fr"
+                    : windowWidth <= 1024
+                    ? "repeat(2, 1fr)"
+                    : "repeat(auto-fit, minmax(220px, 1fr))",
+                marginBottom: windowWidth <= 480 ? "0.8rem" : "1.2rem",
+                width: "100%",
               }}
             >
               {/* Search Input */}
-              <div style={{ gridColumn: "1 / -1" }}>
+              <div
+                style={{
+                  gridColumn: "1 / -1",
+                  boxSizing: "border-box",
+                  width: "100%",
+                  maxWidth: windowWidth <= 640 ? "100%" : "90%",
+                  margin: "0 auto",
+                  paddingLeft: windowWidth <= 640 ? 0 : "0.3rem",
+                  paddingRight: windowWidth <= 640 ? 0 : "0.3rem",
+                  marginBottom: windowWidth <= 640 ? "0.3rem" : "0.2rem",
+                }}
+              >
                 <label
                   style={{
                     fontWeight: 600,
                     marginBottom: windowWidth <= 480 ? "0.4rem" : "0.5rem",
                     display: "block",
-                    fontSize: windowWidth <= 480 ? "0.85rem" : windowWidth <= 768 ? "0.9rem" : "0.95rem",
-                    color: "#1e293b",
+                    fontSize: windowWidth <= 480 ? "0.95rem" : windowWidth <= 768 ? "1rem" : "1.05rem",
+                    color: "#111827",
                   }}
                 >
                   Search Countries
                 </label>
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative", width: "100%" }}>
                   <FaSearch
                     style={{
                       position: "absolute",
                       top: "50%",
-                      left: windowWidth <= 480 ? "0.6rem" : windowWidth <= 768 ? "0.75rem" : "0.75rem",
+                      left: windowWidth <= 480 ? "0.7rem" : windowWidth <= 768 ? "0.9rem" : "1rem",
                       transform: "translateY(-50%)",
                       color: "#94a3b8",
-                      fontSize: windowWidth <= 480 ? "0.85rem" : windowWidth <= 768 ? "0.9rem" : "1rem",
+                      fontSize: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.1rem" : "1.2rem",
                     }}
                   />
                   <input
@@ -255,20 +284,21 @@ const Home = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
                       padding: windowWidth <= 480 
-                        ? "0.5rem 0.6rem 0.5rem 2rem" 
+                        ? "0.6rem 0.7rem 0.6rem 2.2rem" 
                         : windowWidth <= 768 
-                        ? "0.6rem 0.75rem 0.6rem 2.25rem" 
-                        : "0.6rem 0.75rem 0.6rem 2.25rem",
-                      borderRadius: windowWidth <= 480 ? "0.75rem" : "0.9rem",
+                        ? "0.7rem 1rem 0.7rem 2.5rem" 
+                        : "0.75rem 1.2rem 0.75rem 2.7rem",
+                      borderRadius: windowWidth <= 480 ? "0.7rem" : "0.8rem",
                       width: "100%",
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
                       outline: "none",
-                      fontSize: windowWidth <= 480 ? "0.85rem" : windowWidth <= 768 ? "0.9rem" : "0.95rem",
+                      fontSize: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.05rem" : "1.1rem",
                       transition: "all 0.2s ease-in-out",
-                      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.07)",
                       color: "#1e293b",
-                      height: windowWidth <= 480 ? "2.5rem" : windowWidth <= 768 ? "2.75rem" : "2.75rem",
+                      height: windowWidth <= 480 ? "2.2rem" : windowWidth <= 768 ? "2.4rem" : "2.5rem",
+                      boxSizing: "border-box",
                     }}
                   />
                 </div>
@@ -312,14 +342,14 @@ const Home = () => {
                   icon: FaSort,
                 },
               ].map((filter, index) => (
-                <div key={index}>
+                <div key={index} style={{ minWidth: 170, width: "100%" }}>
                   <label
                     style={{
                       fontWeight: 600,
-                      marginBottom: "0.5rem",
+                      marginBottom: windowWidth <= 480 ? "0.4rem" : "0.5rem",
                       display: "block",
-                      fontSize: "0.95rem",
-                      color: "#1e293b",
+                      fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
+                      color: "#111827",
                     }}
                   >
                     {filter.label}
@@ -330,41 +360,45 @@ const Home = () => {
                     onChange={filter.onChange}
                     icon={filter.icon}
                     style={{
-                      fontSize: "0.95rem",
-                      padding: "0.6rem 0.75rem",
-                      borderRadius: "0.9rem",
+                      fontSize: windowWidth <= 480 ? "1rem" : "1.05rem",
+                      padding: windowWidth <= 480 ? "0.7rem 1.2rem" : "0.85rem 1.3rem",
+                      borderRadius: windowWidth <= 480 ? "0.7rem" : "0.8rem",
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
-                      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.07)",
                       color: "#1e293b",
                       width: "100%",
+                      minWidth: 0,
+                      maxWidth: "100%",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
                   />
                 </div>
               ))}
             </div>
-
-            {/* Favorites Button */}
             <button
               onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "0.5rem",
+                gap: "0.6rem",
                 background: showFavoritesOnly ? "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" : "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)",
                 color: "#fff",
                 border: "none",
-                borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
-                padding: windowWidth <= 480 ? "0.6rem 1rem" : "0.8rem 1.5rem",
-                fontWeight: 600,
-                fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
-                boxShadow: "0 2px 8px rgba(59, 130, 246, 0.08)",
+                borderRadius: windowWidth <= 480 ? "0.9rem" : "1rem",
+                padding: windowWidth <= 480 ? "0.6rem 1rem" : "0.7rem 1.2rem",
+                fontWeight: 700,
+                fontSize: windowWidth <= 480 ? "1.05rem" : "1.08rem",
+                boxShadow: "0 2px 8px rgba(59, 130, 246, 0.13)",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
-                width: "100%",
-                maxWidth: windowWidth <= 480 ? "100%" : "300px",
-                margin: "0 auto"
+                width: windowWidth <= 640 ? "100%" : "60%",
+                maxWidth: "350px",
+                margin: windowWidth <= 640 ? "0.7rem auto 0 auto" : "0.8rem auto 0 auto",
+                display: "block",
               }}
               onMouseOver={e => (e.currentTarget.style.background = showFavoritesOnly ? "linear-gradient(90deg, #be185d 0%, #ec4899 100%)" : "linear-gradient(90deg, #2563eb 0%, #6366f1 100%)")}
               onMouseOut={e => (e.currentTarget.style.background = showFavoritesOnly ? "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" : "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)")}
