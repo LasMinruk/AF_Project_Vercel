@@ -186,7 +186,7 @@ const Home = () => {
         width: "100%",
         maxWidth: "1440px",
         margin: "0 auto",
-        padding: windowWidth <= 480 ? "0.75rem" : windowWidth <= 768 ? "1rem" : "2rem"
+        padding: windowWidth <= 480 ? "0.5rem" : windowWidth <= 768 ? "0.75rem" : "1rem"
       }}>
         <div style={{
           width: "100%",
@@ -196,21 +196,22 @@ const Home = () => {
           <div
             style={{
               background: "linear-gradient(135deg, #f8fafc 60%, #e0e7ef 100%)",
-              borderRadius: windowWidth <= 480 ? "1.25rem" : "1.75rem",
-              padding: windowWidth <= 480 ? "1.25rem" : "2rem",
+              borderRadius: windowWidth <= 480 ? "1rem" : "1.5rem",
+              padding: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.5rem" : "2rem",
               boxShadow: "0 8px 32px rgba(31, 41, 55, 0.08)",
               border: "1px solid #e0e7ef",
-              marginBottom: "2rem",
-              transition: "box-shadow 0.2s"
+              marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem",
+              transition: "all 0.3s ease"
             }}
           >
             <h2
               style={{
                 fontWeight: 800,
-                fontSize: windowWidth <= 480 ? "1.3rem" : "1.7rem",
+                fontSize: windowWidth <= 480 ? "1.2rem" : windowWidth <= 768 ? "1.4rem" : "1.7rem",
                 color: "#2563eb",
-                marginBottom: "1.5rem",
-                letterSpacing: "-0.02em"
+                marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem",
+                letterSpacing: "-0.02em",
+                textAlign: windowWidth <= 480 ? "center" : "left"
               }}
             >
               Filter Countries
@@ -218,17 +219,18 @@ const Home = () => {
             <div
               style={{
                 display: "grid",
-                gap: windowWidth <= 480 ? "1rem" : "1.5rem",
+                gap: windowWidth <= 480 ? "0.75rem" : "1rem",
                 gridTemplateColumns: "1fr",
-                marginBottom: "1.5rem"
+                marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem"
               }}
             >
+              {/* Search Input */}
               <div>
                 <label style={{
                   fontWeight: 600,
                   marginBottom: "0.5rem",
                   display: "block",
-                  fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
+                  fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
                   color: "#1e293b"
                 }}>Search Countries</label>
                 <div style={{ position: "relative" }}>
@@ -238,7 +240,7 @@ const Home = () => {
                     left: windowWidth <= 480 ? "0.75rem" : "1rem",
                     transform: "translateY(-50%)",
                     color: "#94a3b8",
-                    fontSize: windowWidth <= 480 ? "1rem" : "1.1rem"
+                    fontSize: windowWidth <= 480 ? "0.9rem" : "1rem"
                   }} />
                   <input
                     type="text"
@@ -246,13 +248,13 @@ const Home = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
-                      padding: windowWidth <= 480 ? "0.7rem 0.75rem 0.7rem 2.25rem" : "0.9rem 1.1rem 0.9rem 2.5rem",
-                      borderRadius: windowWidth <= 480 ? "0.9rem" : "1.1rem",
+                      padding: windowWidth <= 480 ? "0.6rem 0.75rem 0.6rem 2.25rem" : "0.8rem 1rem 0.8rem 2.5rem",
+                      borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
                       width: "100%",
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
                       outline: "none",
-                      fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
+                      fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
                       transition: "all 0.2s ease-in-out",
                       boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                       color: "#1e293b"
@@ -260,128 +262,93 @@ const Home = () => {
                   />
                 </div>
               </div>
-              <div>
-                <label style={{
-                  fontWeight: 600,
-                  marginBottom: "0.5rem",
-                  display: "block",
-                  fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                  color: "#1e293b"
-                }}>Region</label>
-                <SearchableDropdown
-                  options={[
+
+              {/* Filter Dropdowns */}
+              {[
+                {
+                  label: "Region",
+                  value: region,
+                  onChange: setRegion,
+                  options: [
                     { value: "", name: "All Regions" },
                     { value: "Africa", name: "Africa" },
                     { value: "Americas", name: "Americas" },
                     { value: "Asia", name: "Asia" },
                     { value: "Europe", name: "Europe" },
                     { value: "Oceania", name: "Oceania" },
-                  ]}
-                  value={region}
-                  onChange={setRegion}
-                  icon={FaGlobe}
-                  style={{
-                    fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                    padding: windowWidth <= 480 ? "0.7rem 0.75rem" : "0.9rem 1.1rem",
-                    borderRadius: windowWidth <= 480 ? "0.9rem" : "1.1rem",
-                    background: "#f1f5f9",
-                    border: "1.5px solid #e2e8f0",
-                    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                  ],
+                  icon: FaGlobe
+                },
+                {
+                  label: "Language",
+                  value: language,
+                  onChange: setLanguage,
+                  options: [{ value: "", name: "All Languages" }, ...languages],
+                  icon: FaLanguage
+                },
+                {
+                  label: "Currency",
+                  value: currency,
+                  onChange: setCurrency,
+                  options: [{ value: "", name: "All Currencies" }, ...currencies],
+                  icon: FaMoneyBillWave
+                },
+                {
+                  label: "Sort By",
+                  value: sortBy,
+                  onChange: setSortBy,
+                  options: sortOptions,
+                  icon: FaSort
+                }
+              ].map((filter, index) => (
+                <div key={index}>
+                  <label style={{
+                    fontWeight: 600,
+                    marginBottom: "0.5rem",
+                    display: "block",
+                    fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
                     color: "#1e293b"
-                  }}
-                />
-              </div>
-              <div>
-                <label style={{
-                  fontWeight: 600,
-                  marginBottom: "0.5rem",
-                  display: "block",
-                  fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                  color: "#1e293b"
-                }}>Language</label>
-                <SearchableDropdown
-                  options={[{ value: "", name: "All Languages" }, ...languages]}
-                  value={language}
-                  onChange={setLanguage}
-                  icon={FaLanguage}
-                  style={{
-                    fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                    padding: windowWidth <= 480 ? "0.7rem 0.75rem" : "0.9rem 1.1rem",
-                    borderRadius: windowWidth <= 480 ? "0.9rem" : "1.1rem",
-                    background: "#f1f5f9",
-                    border: "1.5px solid #e2e8f0",
-                    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                    color: "#1e293b"
-                  }}
-                />
-              </div>
-              <div>
-                <label style={{
-                  fontWeight: 600,
-                  marginBottom: "0.5rem",
-                  display: "block",
-                  fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                  color: "#1e293b"
-                }}>Currency</label>
-                <SearchableDropdown
-                  options={[{ value: "", name: "All Currencies" }, ...currencies]}
-                  value={currency}
-                  onChange={setCurrency}
-                  icon={FaMoneyBillWave}
-                  style={{
-                    fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                    padding: windowWidth <= 480 ? "0.7rem 0.75rem" : "0.9rem 1.1rem",
-                    borderRadius: windowWidth <= 480 ? "0.9rem" : "1.1rem",
-                    background: "#f1f5f9",
-                    border: "1.5px solid #e2e8f0",
-                    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                    color: "#1e293b"
-                  }}
-                />
-              </div>
-              <div>
-                <label style={{
-                  fontWeight: 600,
-                  marginBottom: "0.5rem",
-                  display: "block",
-                  fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                  color: "#1e293b"
-                }}>Sort By</label>
-                <SearchableDropdown
-                  options={sortOptions}
-                  value={sortBy}
-                  onChange={setSortBy}
-                  icon={FaSort}
-                  style={{
-                    fontSize: windowWidth <= 480 ? "0.95rem" : "1.05rem",
-                    padding: windowWidth <= 480 ? "0.7rem 0.75rem" : "0.9rem 1.1rem",
-                    borderRadius: windowWidth <= 480 ? "0.9rem" : "1.1rem",
-                    background: "#f1f5f9",
-                    border: "1.5px solid #e2e8f0",
-                    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                    color: "#1e293b"
-                  }}
-                />
-              </div>
+                  }}>{filter.label}</label>
+                  <SearchableDropdown
+                    options={filter.options}
+                    value={filter.value}
+                    onChange={filter.onChange}
+                    icon={filter.icon}
+                    style={{
+                      fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
+                      padding: windowWidth <= 480 ? "0.6rem 0.75rem" : "0.8rem 1rem",
+                      borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
+                      background: "#f1f5f9",
+                      border: "1.5px solid #e2e8f0",
+                      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                      color: "#1e293b"
+                    }}
+                  />
+                </div>
+              ))}
             </div>
+
+            {/* Favorites Button */}
             <button
               onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
               style={{
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: "0.5rem",
                 background: showFavoritesOnly ? "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" : "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)",
                 color: "#fff",
                 border: "none",
-                borderRadius: "0.9rem",
-                padding: "0.75rem 1.5rem",
-                fontWeight: 700,
-                fontSize: "1rem",
+                borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
+                padding: windowWidth <= 480 ? "0.6rem 1rem" : "0.8rem 1.5rem",
+                fontWeight: 600,
+                fontSize: windowWidth <= 480 ? "0.9rem" : "1rem",
                 boxShadow: "0 2px 8px rgba(59, 130, 246, 0.08)",
                 cursor: "pointer",
-                transition: "background 0.2s, box-shadow 0.2s",
-                marginTop: "1.5rem",
-                width: windowWidth <= 480 ? "100%" : "auto"
+                transition: "all 0.2s ease",
+                width: "100%",
+                maxWidth: windowWidth <= 480 ? "100%" : "300px",
+                margin: "0 auto"
               }}
               onMouseOver={e => (e.currentTarget.style.background = showFavoritesOnly ? "linear-gradient(90deg, #be185d 0%, #ec4899 100%)" : "linear-gradient(90deg, #2563eb 0%, #6366f1 100%)")}
               onMouseOut={e => (e.currentTarget.style.background = showFavoritesOnly ? "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" : "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)")}
@@ -398,13 +365,13 @@ const Home = () => {
         <div style={innerContainer}>
           <div
             style={{
-              marginTop: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.25rem" : "2rem",
               display: "grid",
-              gap: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.5rem" : "2rem", // Adjusted gap
+              gap: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.25rem" : "1.5rem",
               gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
-                                 windowWidth <= 768 ? "repeat(2, 1fr)" : 
+                                 windowWidth <= 640 ? "repeat(2, 1fr)" : 
                                  windowWidth <= 1024 ? "repeat(3, 1fr)" : 
-                                 "repeat(4, 1fr)", // Adjusted columns for better spacing
+                                 "repeat(4, 1fr)",
+              marginTop: windowWidth <= 480 ? "0.75rem" : windowWidth <= 768 ? "1rem" : "1.5rem"
             }}
           >
             {loading ? (
