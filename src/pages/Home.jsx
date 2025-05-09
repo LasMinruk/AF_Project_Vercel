@@ -225,13 +225,13 @@ const Home = () => {
               }}
             >
               {/* Search Input */}
-              <div>
+              <div style={{ gridColumn: "1 / -1" }}>
                 <label
                   style={{
                     fontWeight: 600,
-                    marginBottom: "0.5rem",
+                    marginBottom: windowWidth <= 480 ? "0.4rem" : "0.5rem",
                     display: "block",
-                    fontSize: "0.95rem",
+                    fontSize: windowWidth <= 480 ? "0.85rem" : windowWidth <= 768 ? "0.9rem" : "0.95rem",
                     color: "#1e293b",
                   }}
                 >
@@ -242,10 +242,10 @@ const Home = () => {
                     style={{
                       position: "absolute",
                       top: "50%",
-                      left: "0.75rem",
+                      left: windowWidth <= 480 ? "0.6rem" : windowWidth <= 768 ? "0.75rem" : "0.75rem",
                       transform: "translateY(-50%)",
                       color: "#94a3b8",
-                      fontSize: "1rem",
+                      fontSize: windowWidth <= 480 ? "0.85rem" : windowWidth <= 768 ? "0.9rem" : "1rem",
                     }}
                   />
                   <input
@@ -254,16 +254,21 @@ const Home = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
-                      padding: "0.6rem 0.75rem 0.6rem 2.25rem",
-                      borderRadius: "0.9rem",
+                      padding: windowWidth <= 480 
+                        ? "0.5rem 0.6rem 0.5rem 2rem" 
+                        : windowWidth <= 768 
+                        ? "0.6rem 0.75rem 0.6rem 2.25rem" 
+                        : "0.6rem 0.75rem 0.6rem 2.25rem",
+                      borderRadius: windowWidth <= 480 ? "0.75rem" : "0.9rem",
                       width: "100%",
                       background: "#f1f5f9",
                       border: "1.5px solid #e2e8f0",
                       outline: "none",
-                      fontSize: "0.95rem",
+                      fontSize: windowWidth <= 480 ? "0.85rem" : windowWidth <= 768 ? "0.9rem" : "0.95rem",
                       transition: "all 0.2s ease-in-out",
                       boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                       color: "#1e293b",
+                      height: windowWidth <= 480 ? "2.5rem" : windowWidth <= 768 ? "2.75rem" : "2.75rem",
                     }}
                   />
                 </div>
