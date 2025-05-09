@@ -67,6 +67,7 @@ const Layout = ({ children }) => {
               textDecoration: "none",
               position: "relative",
               transition: "all 0.3s",
+              padding: "0.25rem 0", // increased tap target on mobile
             }}
             onMouseEnter={(e) => {
               e.target.style.color = "#ef4444";
@@ -99,6 +100,8 @@ const Layout = ({ children }) => {
               gap: "0.5rem",
               flexWrap: "wrap",
               justifyContent: "flex-end",
+              width: "100%",
+              maxWidth: "400px",
             }}
           >
             {/* Favorites */}
@@ -109,7 +112,7 @@ const Layout = ({ children }) => {
                 position: "relative",
                 backgroundColor: "#fdf2f8",
                 color: "#be185d",
-                padding: "0.4rem 0.9rem",
+                padding: "0.6rem 1rem", // increased padding for touch devices
                 borderRadius: "9999px",
                 fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
                 fontWeight: "500",
@@ -118,9 +121,12 @@ const Layout = ({ children }) => {
                 gap: "0.4rem",
                 border: "1px solid #f9a8d4",
                 cursor: "pointer",
+                minWidth: "110px",
+                justifyContent: "center",
               }}
+              aria-label="View favorites"
             >
-              <FaHeart />
+              <FaHeart aria-hidden="true" />
               Favorites
               {favorites.length > 0 && (
                 <span
@@ -137,6 +143,7 @@ const Layout = ({ children }) => {
                     minWidth: "1.25rem",
                     textAlign: "center",
                   }}
+                  aria-label={`${favorites.length} favorite items`}
                 >
                   {favorites.length}
                 </span>
@@ -145,7 +152,17 @@ const Layout = ({ children }) => {
 
             {/* Auth */}
             {currentUser ? (
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  width: "100%",
+                  maxWidth: "250px",
+                }}
+              >
                 {/* User Avatar (first letter) */}
                 <div
                   style={{
@@ -153,14 +170,16 @@ const Layout = ({ children }) => {
                     color: "#0369a1",
                     fontWeight: "700",
                     borderRadius: "9999px",
-                    width: "2rem",
-                    height: "2rem",
+                    width: "2.5rem",
+                    height: "2.5rem",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "0.9rem",
+                    fontSize: "1.1rem",
+                    flexShrink: 0,
                   }}
                   title={currentUser.email}
+                  aria-label={`User logged in as ${currentUser.email}`}
                 >
                   {currentUser.email[0].toUpperCase()}
                 </div>
@@ -169,7 +188,7 @@ const Layout = ({ children }) => {
                   style={{
                     backgroundColor: "#ef4444",
                     color: "#fff",
-                    padding: "0.4rem 0.9rem",
+                    padding: "0.6rem 1rem",
                     borderRadius: "0.5rem",
                     fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
                     fontWeight: "500",
@@ -178,9 +197,13 @@ const Layout = ({ children }) => {
                     gap: "0.5rem",
                     border: "none",
                     cursor: "pointer",
+                    flexGrow: 1,
+                    justifyContent: "center",
+                    minWidth: "100px",
                   }}
+                  aria-label="Logout"
                 >
-                  <FaSignOutAlt />
+                  <FaSignOutAlt aria-hidden="true" />
                   Logout
                 </button>
               </div>
@@ -190,16 +213,19 @@ const Layout = ({ children }) => {
                 style={{
                   backgroundColor: "#2563eb",
                   color: "white",
-                  padding: "0.4rem 0.9rem",
+                  padding: "0.6rem 1rem",
                   borderRadius: "0.5rem",
                   fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
                   textDecoration: "none",
+                  justifyContent: "center",
+                  minWidth: "100px",
                 }}
+                aria-label="Login"
               >
-                <FaUser />
+                <FaUser aria-hidden="true" />
                 Login
               </Link>
             )}
@@ -215,6 +241,7 @@ const Layout = ({ children }) => {
           maxWidth: "1280px",
           margin: "0 auto",
           padding: "1rem 1.25rem 2rem",
+          boxSizing: "border-box",
         }}
       >
         {children}
@@ -226,13 +253,41 @@ const Layout = ({ children }) => {
           textAlign: "center",
           fontSize: "clamp(0.7rem, 2vw, 0.875rem)",
           color: "#6b7280",
-          padding: "1.25rem 0",
+          padding: "1.25rem 1rem",
           borderTop: "1px solid #e5e7eb",
+          boxSizing: "border-box",
         }}
       >
         © {new Date().getFullYear()} Country Explorer. All rights reserved. Created by{" "}
         <span style={{ color: "#1d4ed8", fontWeight: "600" }}>Lasiru</span>
       </footer>
+
+      {/* Responsive styles */}
+      <style>
+        {`
+          @media (max-width: 640px) {
+            header div {
+              justify-content: center !important;
+            }
+            header a, header button {
+              font-size: 1rem !important;
+              padding: 0.75rem 1.25rem !important;
+            }
+            main {
+              padding: 1rem !important;
+            }
+            footer {
+              font-size: 0.75rem !important;
+              padding: 1rem 0.5rem !important;
+            }
+          }
+
+          /* Underline hover effect */
+          .underline-hover:hover {
+            transform: scaleX(1);
+          }
+        `}
+      </style>
     </div>
   );
 };
