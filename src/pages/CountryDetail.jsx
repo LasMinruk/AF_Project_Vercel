@@ -9,6 +9,13 @@ const CountryDetail = () => {
   const [country, setCountry] = useState(null);
   const [borderCountries, setBorderCountries] = useState([]);
   const [error, setError] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,9 +46,25 @@ const CountryDetail = () => {
 
   if (error) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", color: "#dc2626", padding: "1.5rem" }}>
-        <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>Country Not Found</h1>
-        <p style={{ color: "#6b7280", marginTop: "0.5rem" }}>
+      <div style={{ 
+        minHeight: "100vh", 
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        color: "#dc2626", 
+        padding: windowWidth <= 480 ? "1rem" : "1.5rem" 
+      }}>
+        <h1 style={{ 
+          fontSize: windowWidth <= 480 ? "1.5rem" : windowWidth <= 768 ? "1.75rem" : "2rem", 
+          fontWeight: "bold" 
+        }}>Country Not Found</h1>
+        <p style={{ 
+          color: "#6b7280", 
+          marginTop: "0.5rem",
+          fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
+          textAlign: "center"
+        }}>
           Something went wrong.{" "}
           <Link to="/" style={{ color: "#2563eb", textDecoration: "underline" }}>
             Go back home
@@ -53,14 +76,21 @@ const CountryDetail = () => {
 
   if (!country) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", color: "#6b7280", fontSize: "1.25rem" }}>
+      <div style={{ 
+        minHeight: "100vh", 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        color: "#6b7280", 
+        fontSize: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.125rem" : "1.25rem" 
+      }}>
         <div style={{
           animation: "spin 1s linear infinite",
           borderTop: "4px solid #3b82f6",
           borderRadius: "9999px",
-          width: "3rem",
-          height: "3rem",
-          marginRight: "1rem"
+          width: windowWidth <= 480 ? "2rem" : windowWidth <= 768 ? "2.5rem" : "3rem",
+          height: windowWidth <= 480 ? "2rem" : windowWidth <= 768 ? "2.5rem" : "3rem",
+          marginRight: windowWidth <= 480 ? "0.75rem" : "1rem"
         }}></div>
         Loading country details...
       </div>
@@ -96,18 +126,18 @@ const CountryDetail = () => {
       style={{
         minHeight: "100vh",
         background: "linear-gradient(to bottom right, #ffffff, #e0f2fe, #ffffff)",
-        padding: "2.5rem 1.5rem",
+        padding: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.5rem" : "2.5rem 1.5rem",
       }}
     >
       <div style={{
         maxWidth: "80rem",
         margin: "0 auto",
         backgroundColor: "white",
-        borderRadius: "1rem",
+        borderRadius: windowWidth <= 480 ? "0.75rem" : "1rem",
         overflow: "hidden",
         border: "1px solid #e5e7eb",
         boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-        padding: "2rem"
+        padding: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.5rem" : "2rem"
       }}>
         <Link
           to="/"
@@ -116,19 +146,20 @@ const CountryDetail = () => {
             alignItems: "center",
             color: "#2563eb",
             fontWeight: "500",
-            marginBottom: "1rem",
-            textDecoration: "none"
+            marginBottom: windowWidth <= 480 ? "0.75rem" : "1rem",
+            textDecoration: "none",
+            fontSize: windowWidth <= 480 ? "0.875rem" : "1rem"
           }}
         >
           <FiArrowLeft style={{ marginRight: "0.5rem" }} /> Back to Home
         </Link>
 
         {/* Flag */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: windowWidth <= 480 ? "1.5rem" : "2rem" }}>
           <div style={{
             background: "linear-gradient(to bottom right, #eff6ff, #ffffff)",
-            padding: "1rem",
-            borderRadius: "0.75rem",
+            padding: windowWidth <= 480 ? "0.75rem" : "1rem",
+            borderRadius: windowWidth <= 480 ? "0.5rem" : "0.75rem",
             boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
             maxWidth: "30rem",
             width: "100%",
@@ -140,28 +171,46 @@ const CountryDetail = () => {
                 alt={`${name.common} flag`}
                 style={{
                   width: "100%",
-                  height: "240px",
+                  height: windowWidth <= 480 ? "180px" : windowWidth <= 768 ? "200px" : "240px",
                   objectFit: "contain",
                   transition: "transform 0.3s ease-in-out"
                 }}
               />
             </div>
-            <p style={{ textAlign: "center", color: "#6b7280", fontStyle: "italic", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+            <p style={{ 
+              textAlign: "center", 
+              color: "#6b7280", 
+              fontStyle: "italic", 
+              fontSize: windowWidth <= 480 ? "0.75rem" : "0.875rem", 
+              marginTop: "0.5rem" 
+            }}>
               Official flag of {name.common}
             </p>
           </div>
         </div>
 
-        <h2 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#1f2937", marginBottom: "0.25rem" }}>
+        <h2 style={{ 
+          fontSize: windowWidth <= 480 ? "1.75rem" : windowWidth <= 768 ? "2rem" : "2.5rem", 
+          fontWeight: "bold", 
+          color: "#1f2937", 
+          marginBottom: "0.25rem" 
+        }}>
           {name.common}
         </h2>
-        <p style={{ color: "#6b7280", marginBottom: "1.5rem", fontStyle: "italic" }}>{name.official}</p>
+        <p style={{ 
+          color: "#6b7280", 
+          marginBottom: windowWidth <= 480 ? "1rem" : "1.5rem", 
+          fontStyle: "italic",
+          fontSize: windowWidth <= 480 ? "0.875rem" : "1rem"
+        }}>{name.official}</p>
 
         {/* Info Cards Grid */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-          gap: "1.5rem"
+          gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
+                             windowWidth <= 768 ? "repeat(2, 1fr)" : 
+                             "repeat(auto-fill, minmax(250px, 1fr))",
+          gap: windowWidth <= 480 ? "1rem" : "1.5rem"
         }}>
           <InfoCard label="Capital" value={capital?.[0] || "N/A"} />
           <InfoCard label="Region" value={region} />
@@ -175,20 +224,28 @@ const CountryDetail = () => {
 
         {/* Border Countries */}
         {borderCountries.length > 0 && (
-          <div style={{ marginTop: "2.5rem" }}>
-            <h3 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "0.5rem" }}>
+          <div style={{ marginTop: windowWidth <= 480 ? "1.5rem" : "2.5rem" }}>
+            <h3 style={{ 
+              fontSize: windowWidth <= 480 ? "1.125rem" : "1.25rem", 
+              fontWeight: "600", 
+              marginBottom: "0.5rem" 
+            }}>
               Border Countries:
             </h3>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+            <div style={{ 
+              display: "flex", 
+              flexWrap: "wrap", 
+              gap: windowWidth <= 480 ? "0.375rem" : "0.5rem" 
+            }}>
               {borderCountries.map((b) => (
                 <Link
                   key={b.cca3}
                   to={`/country/${b.cca3}`}
                   style={{
                     backgroundColor: "#e5e7eb",
-                    padding: "0.5rem 0.75rem",
+                    padding: windowWidth <= 480 ? "0.375rem 0.5rem" : "0.5rem 0.75rem",
                     borderRadius: "9999px",
-                    fontSize: "0.875rem",
+                    fontSize: windowWidth <= 480 ? "0.75rem" : "0.875rem",
                     textDecoration: "none",
                     color: "#111827"
                   }}
@@ -207,7 +264,10 @@ const CountryDetail = () => {
         )}
 
         {/* Google Maps Link */}
-        <div style={{ marginTop: "2.5rem", textAlign: "center" }}>
+        <div style={{ 
+          marginTop: windowWidth <= 480 ? "1.5rem" : "2.5rem", 
+          textAlign: "center" 
+        }}>
           <a
             href={maps?.googleMaps}
             target="_blank"
@@ -216,10 +276,12 @@ const CountryDetail = () => {
               backgroundColor: "#2563eb",
               color: "white",
               fontWeight: "600",
-              padding: "0.75rem 1.5rem",
-              borderRadius: "0.5rem",
+              padding: windowWidth <= 480 ? "0.625rem 1.25rem" : "0.75rem 1.5rem",
+              borderRadius: windowWidth <= 480 ? "0.375rem" : "0.5rem",
               textDecoration: "none",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontSize: windowWidth <= 480 ? "0.875rem" : "1rem",
+              display: "inline-block"
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#1d4ed8")
