@@ -364,11 +364,11 @@ const Home = () => {
             style={{
               marginTop: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.25rem" : "2rem",
               display: "grid",
+              gap: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.5rem" : "2rem", // Adjusted gap
               gridTemplateColumns: windowWidth <= 480 ? "1fr" : 
                                  windowWidth <= 768 ? "repeat(2, 1fr)" : 
                                  windowWidth <= 1024 ? "repeat(3, 1fr)" : 
-                                 "repeat(4, 1fr)",
-              gap: windowWidth <= 480 ? "1rem" : windowWidth <= 768 ? "1.25rem" : "2rem"
+                                 "repeat(4, 1fr)", // Adjusted columns for better spacing
             }}
           >
             {loading ? (
